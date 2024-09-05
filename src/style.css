@@ -22,13 +22,9 @@
 }
 
 #playground #snake {
-	height: 46.66px;
-	width: 46.66px;
 	font-size: 20px;
 	background-color: var(--green);
 	position: absolute;
-	top: calc(7 * (700px / 15));
-	left: calc(7 * (700px / 15));
 	z-index: 2;
 }
 
@@ -37,11 +33,7 @@
 	width: 46.66px;
 	font-size: 20px;
 	color: var(--black);
-
-	/* text-align: center; */
-
 	background-color: var(--red);
 	position: absolute;
-
 	z-index: 1;
 }

@@ -25,12 +25,16 @@ let positionFood = {
 
 let foodCount = 0;
 
-let snakeSize = { width: fieldSize, height: fieldSize };
-
 let snake = <HTMLDivElement>document.getElementById("snake");
+snake.style.top = position.y.toString() + "px";
+snake.style.left = position.x.toString() + "px";
+snake.style.height = fieldSize.toString() + "px";
+snake.style.width = fieldSize.toString() + "px";
+
+const movingSnake: HTMLDivElement[] = [];
+movingSnake[0] = snake;
 
 const food = <HTMLDivElement>document.getElementById("food");
-
 food.style.top = positionFood.y.toString() + "px";
 food.style.left = positionFood.x.toString() + "px";
 
@@ -63,7 +67,9 @@ function changeDirection(action: string) {
 			restart();
 		} else {
 			snake.style.top = position.y.toString() + "px";
-			checkIfFood();
+			if (checkIfFood()) {
+				// growBottom();
+			}
 		}
 	}
 
@@ -75,7 +81,9 @@ function changeDirection(action: string) {
 			restart();
 		} else {
 			snake.style.top = position.y.toString() + "px";
-			checkIfFood();
+			if (checkIfFood()) {
+				// growTop();
+			}
 		}
 	}
 	if (action === "left") {
@@ -86,7 +94,9 @@ function changeDirection(action: string) {
 			restart();
 		} else {
 			snake.style.left = position.x.toString() + "px";
-			checkIfFood();
+			if (checkIfFood()) {
+				growRight();
+			}
 		}
 	}
 	if (action === "right") {
@@ -97,7 +107,9 @@ function changeDirection(action: string) {
 			restart();
 		} else {
 			snake.style.left = position.x.toString() + "px";
-			checkIfFood();
+			if (checkIfFood()) {
+				// growLeft();
+			}
 		}
 	}
 }
@@ -136,5 +148,12 @@ function checkIfFood() {
 		};
 		food.style.top = positionFood.y.toString() + "px";
 		food.style.left = positionFood.x.toString() + "px";
+		return true;
 	}
+}
+
+function growRight() {
+	movingSnake[foodCount] = snake;
+	console.log(movingSnake);
+	movingSnake[0] = document.createElement("div");
 }
