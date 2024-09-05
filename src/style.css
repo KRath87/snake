@@ -9,9 +9,9 @@
 #playground {
 	height: 700px;
 	width: 700px;
-	/* background-color: var(--blue); */
 	display: grid;
 	grid-template-columns: repeat(15, 1fr);
+	position: relative;
 }
 
 #playground > div:nth-child(even) {
@@ -19,4 +19,24 @@
 }
 #playground > div:nth-child(odd) {
 	background-color: var(--blue);
+}
+
+#playground #snake {
+	height: 46.66px;
+	width: 46.66px;
+	background-color: var(--green);
+	position: absolute;
+	top: 330px;
+	left: 330px;
+	z-index: 2;
+}
+
+#playground #food {
+	height: 20px;
+	width: 20px;
+	background-color: var(--red);
+	position: absolute;
+	top: 80px;
+	left: 80px;
+	z-index: 2;
 }
