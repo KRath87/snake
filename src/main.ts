@@ -17,8 +17,6 @@ let position = {
 
 let randomX = Math.floor(Math.random() * (15 - 1) + 1);
 let randomY = Math.floor(Math.random() * (15 - 1) + 1);
-console.log(randomX);
-console.log(randomY);
 
 let positionFood = {
 	x: randomX * fieldSize,
@@ -35,6 +33,7 @@ const food = <HTMLDivElement>document.getElementById("food");
 
 food.style.top = positionFood.y.toString() + "px";
 food.style.left = positionFood.x.toString() + "px";
+
 document.addEventListener("keydown", movement);
 
 function movement(e: KeyboardEvent) {
@@ -58,6 +57,7 @@ function movement(e: KeyboardEvent) {
 function changeDirection(action: string) {
 	if (action === "up") {
 		position.y -= fieldSize;
+
 		if (position.y <= 0 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
@@ -69,6 +69,7 @@ function changeDirection(action: string) {
 
 	if (action === "down") {
 		position.y += fieldSize;
+
 		if (position.y >= 700 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
@@ -79,6 +80,7 @@ function changeDirection(action: string) {
 	}
 	if (action === "left") {
 		position.x -= fieldSize;
+
 		if (position.x <= 0 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
@@ -89,6 +91,7 @@ function changeDirection(action: string) {
 	}
 	if (action === "right") {
 		position.x += fieldSize;
+
 		if (position.x >= 700 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
@@ -105,11 +108,32 @@ function restart() {
 	};
 	snake.style.left = position.x.toString() + "px";
 	snake.style.top = position.y.toString() + "px";
+	foodCount = 0;
+	randomX = Math.floor(Math.random() * (15 - 1) + 1);
+	randomY = Math.floor(Math.random() * (15 - 1) + 1);
+	positionFood = {
+		x: randomX * fieldSize,
+		y: randomY * fieldSize,
+	};
+	food.style.top = positionFood.y.toString() + "px";
+	food.style.left = positionFood.x.toString() + "px";
 }
 
 function checkIfFood() {
-	if (position === positionFood) {
+	if (
+		Math.round(position.x) === Math.round(positionFood.x) &&
+		Math.round(position.y) === Math.round(positionFood.y)
+	) {
+		console.log(position);
+		console.log(positionFood);
 		foodCount++;
+		console.log(foodCount);
+		randomX = Math.floor(Math.random() * (15 - 1) + 1);
+		randomY = Math.floor(Math.random() * (15 - 1) + 1);
+		positionFood = {
+			x: randomX * fieldSize,
+			y: randomY * fieldSize,
+		};
 		food.style.top = positionFood.y.toString() + "px";
 		food.style.left = positionFood.x.toString() + "px";
 	}
