@@ -26,17 +26,16 @@
 	width: 46.66px;
 	background-color: var(--green);
 	position: absolute;
-	top: 330px;
-	left: 330px;
+	top: calc(7 * (700px / 15));
+	left: calc(7 * (700px / 15));
 	z-index: 2;
 }
 
 #playground #food {
-	height: 20px;
-	width: 20px;
+	height: 46.66px;
+	width: 46.66px;
 	background-color: var(--red);
 	position: absolute;
-	top: 80px;
-	left: 80px;
+
 	z-index: 2;
 }
