@@ -10,6 +10,8 @@ for (let i = 0; i < 225; i++) {
 
 const fieldSize = 700 / 15;
 
+let direction = "";
+
 let lastPosition = {
 	x: 7 * fieldSize,
 	y: 7 * fieldSize,
@@ -43,11 +45,13 @@ const food = <HTMLDivElement>document.getElementById("food");
 food.style.top = positionFood.y.toString() + "px";
 food.style.left = positionFood.x.toString() + "px";
 
+// setInterval(start, 500);
+
 document.addEventListener("keydown", movement);
 
+setInterval(move, 500);
 function movement(e: KeyboardEvent) {
 	const code = e.code;
-
 	if (code === "ArrowUp" || code === "KeyW") {
 		//up
 		changeDirection("up");
@@ -65,16 +69,20 @@ function movement(e: KeyboardEvent) {
 
 function changeDirection(action: string) {
 	if (action === "up") {
+		direction = "up";
 		moveUp();
 	}
 
 	if (action === "down") {
+		direction = "down";
 		moveDown();
 	}
 	if (action === "left") {
+		direction = "left";
 		moveLeft();
 	}
 	if (action === "right") {
+		direction = "right";
 		moveRight();
 	}
 }
@@ -187,6 +195,54 @@ function moveLeft() {
 		movingSnake[foodCount].style.left = position.x.toString() + "px";
 		if (checkIfFood()) {
 			growRight();
+		}
+	}
+}
+
+function move() {
+	if (direction === "up") {
+		position.y -= fieldSize;
+		if (position.y <= 0 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else {
+			movingSnake[foodCount].style.top = position.y.toString() + "px";
+			if (checkIfFood()) {
+				growBottom();
+			}
+		}
+	} else if (direction === "down") {
+		position.y += fieldSize;
+		if (position.y >= 700 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else {
+			movingSnake[foodCount].style.top = position.y.toString() + "px";
+			if (checkIfFood()) {
+				growTop();
+			}
+		}
+	} else if (direction === "right") {
+		position.x += fieldSize;
+		if (position.x >= 700 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else {
+			movingSnake[foodCount].style.left = position.x.toString() + "px";
+			if (checkIfFood()) {
+				growLeft();
+			}
+		}
+	} else if (direction === "left") {
+		position.x -= fieldSize;
+		if (position.x <= 0 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else {
+			movingSnake[foodCount].style.left = position.x.toString() + "px";
+			if (checkIfFood()) {
+				growRight();
+			}
 		}
 	}
 }
