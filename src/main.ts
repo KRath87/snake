@@ -40,12 +40,12 @@ snake.style.left = position.x.toString() + "px";
 snake.style.height = fieldSize.toString() + "px";
 snake.style.width = fieldSize.toString() + "px";
 
-const newSnake = document.createElement("div");
-newSnake.id = "newSnake";
-newSnake.style.top = lastPosition.y.toString() + "px";
-newSnake.style.left = lastPosition.x.toString() + "px";
-newSnake.style.height = fieldSize.toString() + "px";
-newSnake.style.top = fieldSize.toString() + "px";
+// const newSnake = document.createElement("div");
+// newSnake.id = "newSnake";
+// newSnake.style.top = lastPosition.y.toString() + "px";
+// newSnake.style.left = lastPosition.x.toString() + "px";
+// newSnake.style.height = fieldSize.toString() + "px";
+// newSnake.style.top = fieldSize.toString() + "px";
 
 const movingSnake: HTMLDivElement[] = [];
 movingSnake[foodCount] = snake;
@@ -58,8 +58,8 @@ document.addEventListener("keydown", movement);
 
 pace();
 
-function movement(e: KeyboardEvent) {
-	const code = e.code;
+function movement(event: KeyboardEvent) {
+	const code = event.code;
 	if (code === "ArrowUp" || code === "KeyW") {
 		//up
 		changeDirection("up");
@@ -143,20 +143,55 @@ function checkIfFood() {
 }
 
 function growBottom() {
+	const newSnake = document.createElement("div");
+	newSnake.id = "newSnake";
+	newSnake.style.top = lastPosition.y.toString() + "px";
+	newSnake.style.left = lastPosition.x.toString() + "px";
+	newSnake.style.height = fieldSize.toString() + "px";
+	newSnake.style.width = fieldSize.toString() + "px";
+
+	playground.appendChild(newSnake);
 	movingSnake[foodCount] = newSnake;
 	console.log(newSnake);
 	console.log(movingSnake);
 }
 function growTop() {
+	const newSnake = document.createElement("div");
+	newSnake.id = "newSnake";
+	newSnake.style.top = lastPosition.y.toString() + "px";
+	newSnake.style.left = lastPosition.x.toString() + "px";
+	newSnake.style.height = fieldSize.toString() + "px";
+	newSnake.style.width = fieldSize.toString() + "px";
+
+	playground.appendChild(newSnake);
 	movingSnake[foodCount] = newSnake;
+	console.log(newSnake);
 	console.log(movingSnake);
 }
 function growLeft() {
+	const newSnake = document.createElement("div");
+	newSnake.id = "newSnake";
+	newSnake.style.top = lastPosition.y.toString() + "px";
+	newSnake.style.left = lastPosition.x.toString() + "px";
+	newSnake.style.height = fieldSize.toString() + "px";
+	newSnake.style.width = fieldSize.toString() + "px";
+
+	playground.appendChild(newSnake);
 	movingSnake[foodCount] = newSnake;
+	console.log(newSnake);
 	console.log(movingSnake);
 }
 function growRight() {
+	const newSnake = document.createElement("div");
+	newSnake.id = "newSnake";
+	newSnake.style.top = lastPosition.y.toString() + "px";
+	newSnake.style.left = lastPosition.x.toString() + "px";
+	newSnake.style.height = fieldSize.toString() + "px";
+	newSnake.style.width = fieldSize.toString() + "px";
+
+	playground.appendChild(newSnake);
 	movingSnake[foodCount] = newSnake;
+	console.log(newSnake);
 	console.log(movingSnake);
 }
 
