@@ -106,6 +106,7 @@ function restart() {
 	};
 	food.style.top = positionFood.y.toString() + "px";
 	food.style.left = positionFood.x.toString() + "px";
+	direction = "";
 }
 
 function checkIfFood() {
