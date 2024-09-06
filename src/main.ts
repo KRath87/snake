@@ -11,6 +11,7 @@ for (let i = 0; i < 225; i++) {
 const fieldSize = 700 / 15;
 
 let direction = "";
+let intervalId = 0;
 
 let lastPosition = {
 	x: 7 * fieldSize,
@@ -31,6 +32,7 @@ let positionFood = {
 };
 
 let foodCount = 0;
+let speed = 500;
 
 const snake = <HTMLDivElement>document.getElementById("snake");
 snake.style.top = position.y.toString() + "px";
@@ -45,11 +47,10 @@ const food = <HTMLDivElement>document.getElementById("food");
 food.style.top = positionFood.y.toString() + "px";
 food.style.left = positionFood.x.toString() + "px";
 
-// setInterval(start, 500);
-
 document.addEventListener("keydown", movement);
 
-setInterval(move, 500);
+pace();
+
 function movement(e: KeyboardEvent) {
 	const code = e.code;
 	if (code === "ArrowUp" || code === "KeyW") {
@@ -107,6 +108,7 @@ function restart() {
 	food.style.top = positionFood.y.toString() + "px";
 	food.style.left = positionFood.x.toString() + "px";
 	direction = "";
+	speed = 500;
 }
 
 function checkIfFood() {
@@ -123,7 +125,12 @@ function checkIfFood() {
 		};
 		food.style.top = positionFood.y.toString() + "px";
 		food.style.left = positionFood.x.toString() + "px";
-
+		clearInterval(intervalId);
+		speed = speed - 25;
+		if (speed <= 50) {
+			speed = 50;
+		}
+		pace();
 		return true;
 	}
 }
@@ -210,4 +217,8 @@ function move() {
 	} else if (direction === "left") {
 		moveLeft();
 	}
+}
+
+function pace() {
+	intervalId = setInterval(move, speed);
 }
