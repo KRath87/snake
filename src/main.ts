@@ -201,48 +201,12 @@ function moveLeft() {
 
 function move() {
 	if (direction === "up") {
-		position.y -= fieldSize;
-		if (position.y <= 0 - fieldSize) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
-		} else {
-			movingSnake[foodCount].style.top = position.y.toString() + "px";
-			if (checkIfFood()) {
-				growBottom();
-			}
-		}
+		moveUp();
 	} else if (direction === "down") {
-		position.y += fieldSize;
-		if (position.y >= 700 - fieldSize) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
-		} else {
-			movingSnake[foodCount].style.top = position.y.toString() + "px";
-			if (checkIfFood()) {
-				growTop();
-			}
-		}
+		moveDown();
 	} else if (direction === "right") {
-		position.x += fieldSize;
-		if (position.x >= 700 - fieldSize) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
-		} else {
-			movingSnake[foodCount].style.left = position.x.toString() + "px";
-			if (checkIfFood()) {
-				growLeft();
-			}
-		}
+		moveRight();
 	} else if (direction === "left") {
-		position.x -= fieldSize;
-		if (position.x <= 0 - fieldSize) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
-		} else {
-			movingSnake[foodCount].style.left = position.x.toString() + "px";
-			if (checkIfFood()) {
-				growRight();
-			}
-		}
+		moveLeft();
 	}
 }
