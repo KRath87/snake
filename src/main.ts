@@ -137,8 +137,6 @@ function checkIfFood() {
 
 function growBottom() {
 	movingSnake[foodCount] = snake;
-	movingSnake[foodCount - 1] = snake;
-	//
 }
 function growTop() {
 	movingSnake[foodCount] = snake;
@@ -155,8 +153,10 @@ function growRight() {
 }
 
 function moveUp() {
+	lastPosition = position;
 	position.y -= fieldSize;
-
+	console.log(position);
+	console.log(lastPosition);
 	if (position.y <= 0 - fieldSize) {
 		alert("Das war ein Crash. GAME OVER");
 		restart();
@@ -169,7 +169,10 @@ function moveUp() {
 }
 
 function moveDown() {
+	lastPosition = position;
 	position.y += fieldSize;
+	console.log(position);
+	console.log(lastPosition);
 	if (position.y >= 700 - fieldSize) {
 		alert("Das war ein Crash. GAME OVER");
 		restart();
@@ -182,7 +185,10 @@ function moveDown() {
 }
 
 function moveRight() {
+	lastPosition = position;
 	position.x += fieldSize;
+	console.log(position);
+	console.log(lastPosition);
 	if (position.x >= 700 - fieldSize) {
 		alert("Das war ein Crash. GAME OVER");
 		restart();
@@ -195,7 +201,10 @@ function moveRight() {
 }
 
 function moveLeft() {
+	lastPosition = position;
 	position.x -= fieldSize;
+	console.log(position);
+	console.log(lastPosition);
 	if (position.x <= 0 - fieldSize) {
 		alert("Das war ein Crash. GAME OVER");
 		restart();
