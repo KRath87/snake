@@ -40,6 +40,13 @@ snake.style.left = position.x.toString() + "px";
 snake.style.height = fieldSize.toString() + "px";
 snake.style.width = fieldSize.toString() + "px";
 
+const newSnake = document.createElement("div");
+newSnake.id = "newSnake";
+newSnake.style.top = lastPosition.y.toString() + "px";
+newSnake.style.left = lastPosition.x.toString() + "px";
+newSnake.style.height = fieldSize.toString() + "px";
+newSnake.style.top = fieldSize.toString() + "px";
+
 const movingSnake: HTMLDivElement[] = [];
 movingSnake[foodCount] = snake;
 
@@ -136,27 +143,28 @@ function checkIfFood() {
 }
 
 function growBottom() {
-	movingSnake[foodCount] = snake;
+	movingSnake[foodCount] = newSnake;
+	console.log(newSnake);
 	console.log(movingSnake);
 }
 function growTop() {
-	movingSnake[foodCount] = snake;
+	movingSnake[foodCount] = newSnake;
 	console.log(movingSnake);
 }
 function growLeft() {
-	movingSnake[foodCount] = snake;
+	movingSnake[foodCount] = newSnake;
 	console.log(movingSnake);
 }
 function growRight() {
-	movingSnake[foodCount] = snake;
+	movingSnake[foodCount] = newSnake;
 	console.log(movingSnake);
 }
 
 function moveUp() {
-	lastPosition = position;
+	lastPosition = { ...position };
 	position.y -= fieldSize;
-	console.log(position);
 	console.log(lastPosition);
+	console.log(position);
 	if (position.y <= 0 - fieldSize) {
 		alert("Das war ein Crash. GAME OVER");
 		restart();
@@ -169,10 +177,10 @@ function moveUp() {
 }
 
 function moveDown() {
-	lastPosition = position;
+	lastPosition = { ...position };
 	position.y += fieldSize;
-	console.log(position);
 	console.log(lastPosition);
+	console.log(position);
 	if (position.y >= 700 - fieldSize) {
 		alert("Das war ein Crash. GAME OVER");
 		restart();
@@ -185,10 +193,10 @@ function moveDown() {
 }
 
 function moveRight() {
-	lastPosition = position;
+	lastPosition = { ...position };
 	position.x += fieldSize;
-	console.log(position);
 	console.log(lastPosition);
+	console.log(position);
 	if (position.x >= 700 - fieldSize) {
 		alert("Das war ein Crash. GAME OVER");
 		restart();
@@ -201,10 +209,10 @@ function moveRight() {
 }
 
 function moveLeft() {
-	lastPosition = position;
+	lastPosition = { ...position };
 	position.x -= fieldSize;
-	console.log(position);
 	console.log(lastPosition);
+	console.log(position);
 	if (position.x <= 0 - fieldSize) {
 		alert("Das war ein Crash. GAME OVER");
 		restart();
