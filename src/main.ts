@@ -10,6 +10,11 @@ for (let i = 0; i < 225; i++) {
 
 const fieldSize = 700 / 15;
 
+let lastPosition = {
+	x: 7 * fieldSize,
+	y: 7 * fieldSize,
+};
+
 let position = {
 	x: 7 * fieldSize,
 	y: 7 * fieldSize,
@@ -25,14 +30,14 @@ let positionFood = {
 
 let foodCount = 0;
 
-let snake = <HTMLDivElement>document.getElementById("snake");
+const snake = <HTMLDivElement>document.getElementById("snake");
 snake.style.top = position.y.toString() + "px";
 snake.style.left = position.x.toString() + "px";
 snake.style.height = fieldSize.toString() + "px";
 snake.style.width = fieldSize.toString() + "px";
 
 const movingSnake: HTMLDivElement[] = [];
-movingSnake[0] = snake;
+movingSnake[foodCount] = snake;
 
 const food = <HTMLDivElement>document.getElementById("food");
 food.style.top = positionFood.y.toString() + "px";
@@ -60,55 +65,65 @@ function movement(e: KeyboardEvent) {
 
 function changeDirection(action: string) {
 	if (action === "up") {
+		console.log(lastPosition);
+		console.log(position);
+		lastPosition = position;
 		position.y -= fieldSize;
+		console.log(lastPosition);
+		console.log(position);
 
 		if (position.y <= 0 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else {
-			snake.style.top = position.y.toString() + "px";
+			movingSnake[foodCount].style.top = position.y.toString() + "px";
 			if (checkIfFood()) {
-				// growBottom();
+				growBottom();
 			}
 		}
 	}
 
 	if (action === "down") {
+		lastPosition = position;
 		position.y += fieldSize;
+		console.log(lastPosition);
+		console.log(position);
 
 		if (position.y >= 700 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else {
-			snake.style.top = position.y.toString() + "px";
+			movingSnake[foodCount].style.top = position.y.toString() + "px";
 			if (checkIfFood()) {
-				// growTop();
+				growTop();
 			}
 		}
 	}
 	if (action === "left") {
+		lastPosition = position;
 		position.x -= fieldSize;
 
 		if (position.x <= 0 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else {
-			snake.style.left = position.x.toString() + "px";
+			movingSnake[foodCount].style.left = position.x.toString() + "px";
 			if (checkIfFood()) {
 				growRight();
 			}
 		}
 	}
 	if (action === "right") {
+		lastPosition = position;
 		position.x += fieldSize;
 
 		if (position.x >= 700 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else {
-			snake.style.left = position.x.toString() + "px";
+			movingSnake[foodCount].style.left = position.x.toString() + "px";
 			if (checkIfFood()) {
-				// growLeft();
+				growLeft();
 			}
 		}
 	}
@@ -118,8 +133,8 @@ function restart() {
 		x: 7 * fieldSize,
 		y: 7 * fieldSize,
 	};
-	snake.style.left = position.x.toString() + "px";
-	snake.style.top = position.y.toString() + "px";
+	movingSnake[foodCount].style.left = position.x.toString() + "px";
+	movingSnake[foodCount].style.top = position.y.toString() + "px";
 	foodCount = 0;
 	randomX = Math.floor(Math.random() * (15 - 1) + 1);
 	randomY = Math.floor(Math.random() * (15 - 1) + 1);
@@ -136,10 +151,8 @@ function checkIfFood() {
 		Math.round(position.x) === Math.round(positionFood.x) &&
 		Math.round(position.y) === Math.round(positionFood.y)
 	) {
-		console.log(position);
 		console.log(positionFood);
 		foodCount++;
-		console.log(foodCount);
 		randomX = Math.floor(Math.random() * (15 - 1) + 1);
 		randomY = Math.floor(Math.random() * (15 - 1) + 1);
 		positionFood = {
@@ -152,8 +165,38 @@ function checkIfFood() {
 	}
 }
 
-function growRight() {
+function growBottom() {
+	console.log(lastPosition);
+	console.log(position);
+	console.log(movingSnake[foodCount]);
+	console.log(movingSnake[foodCount - 1]);
+
 	movingSnake[foodCount] = snake;
-	console.log(movingSnake);
-	movingSnake[0] = document.createElement("div");
+	movingSnake[foodCount - 1] = snake;
+	//
+}
+function growTop() {
+	console.log(foodCount);
+	console.log(position);
+	console.log(movingSnake[foodCount]);
+	console.log(movingSnake[foodCount - 1]);
+	movingSnake[foodCount] = snake;
+	console.log(movingSnake[foodCount]);
+	//
+}
+function growLeft() {
+	console.log(foodCount);
+	console.log(position);
+	console.log(movingSnake[foodCount]);
+	console.log(movingSnake[foodCount - 1]);
+	movingSnake[foodCount] = snake;
+	//
+}
+function growRight() {
+	console.log(foodCount);
+	console.log(position);
+	console.log(movingSnake[foodCount]);
+	console.log(movingSnake[foodCount - 1]);
+	movingSnake[foodCount] = snake;
+	//
 }
