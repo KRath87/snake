@@ -137,19 +137,19 @@ function checkIfFood() {
 
 function growBottom() {
 	movingSnake[foodCount] = snake;
+	console.log(movingSnake);
 }
 function growTop() {
 	movingSnake[foodCount] = snake;
-
-	//
+	console.log(movingSnake);
 }
 function growLeft() {
 	movingSnake[foodCount] = snake;
-	//
+	console.log(movingSnake);
 }
 function growRight() {
 	movingSnake[foodCount] = snake;
-	//
+	console.log(movingSnake);
 }
 
 function moveUp() {
