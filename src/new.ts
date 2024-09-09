@@ -16,24 +16,28 @@ let apple: { x: number; y: number } = { x: 0, y: 0 };
 
 let speed = 2;
 
+document.addEventListener("keydown", keyPress);
+
+start();
+
 function keyPress(event: KeyboardEvent) {
 	const code = event.code;
 	if (code === "ArrowUp" || code === "KeyW") {
 		//up
 		direction = "up";
-		movement("up");
+		movement();
 	} else if (code === "ArrowDown" || code === "KeyS") {
 		//down
 		direction = "down";
-		movement("down");
+		movement();
 	} else if (code === "ArrowLeft" || code === "KeyA") {
 		//left
 		direction = "left";
-		movement("left");
+		movement();
 	} else if (code === "ArrowRight" || code === "KeyD") {
 		//right
 		direction = "right";
-		movement("right");
+		movement();
 	}
 }
 
@@ -42,7 +46,7 @@ function start() {
 	apple = { x: Math.random() * (15 - 1) + 1, y: Math.random() * (15 - 1) + 1 };
 	if (snake[0].x === apple.x && snake[0].y === apple.y) {
 		apple = {
-			x: Math.random() * (15 - 1) + 1,
+			x: 13 * fieldSize,
 			y: Math.random() * (15 - 1) + 1,
 		};
 	}
@@ -64,30 +68,79 @@ function checkIfFood() {
 	if (snake[0].x === apple.x && snake[0].y === apple.y) {
 		newFood();
 		grow();
+		return true;
 	}
 }
 
 function movement() {
-	for (let e = 0; e < snake.length; e++) {
-		if (direction === "up") {
-			snake[0].y -= fieldSize;
-			//
-		}
-		if (direction === "down") {
-			snake[0].y += fieldSize;
-			//
-		}
-		if (direction === "left") {
-			snake[0].x -= fieldSize;
-			//
-		}
-		if (direction === "right") {
-			snake[0].x += fieldSize;
-			//
+	// for (let e = 0; e < snake.length; e++) {
+	if (direction === "up") {
+		snake[0].y -= fieldSize;
+		//
+		if (snake[0].y <= 0 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else {
+			if (checkIfFood()) {
+				grow();
+			}
 		}
 	}
+
+	if (direction === "down") {
+		snake[0].y += fieldSize;
+		//
+		if (snake[0].y >= 700 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else {
+			if (checkIfFood()) {
+				grow();
+			}
+		}
+	}
+	if (direction === "left") {
+		snake[0].x -= fieldSize;
+		//
+		if (snake[0].x <= 0 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else {
+			if (checkIfFood()) {
+				grow();
+			}
+		}
+	}
+	if (direction === "right") {
+		snake[0].x += fieldSize;
+		//
+		if (snake[0].x >= 700 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else {
+			if (checkIfFood()) {
+				grow();
+			}
+		}
+	}
+	// }
 }
 
 function grow() {
+	if (direction === "up") {
+		//
+	}
+	if (direction === "down") {
+		//
+	}
+	if (direction === "right") {
+		//
+	}
+	if (direction === "left") {
+		//
+	}
+}
+
+function restart() {
 	//
 }
