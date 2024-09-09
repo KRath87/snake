@@ -66,84 +66,64 @@ function newFood() {
 
 function checkIfFood() {
 	if (snake[0].x === apple.x && snake[0].y === apple.y) {
-		newFood();
 		return true;
 	}
 }
 
 function movement() {
-	// for (let e = 0; e < snake.length; e++) {
 	if (direction === "up") {
-		snake[0].y -= fieldSize;
-		//
-		if (snake[0].y <= 0 - fieldSize) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
+		if (checkIfFood()) {
+			grow();
+			newFood();
 		} else {
-			if (checkIfFood()) {
-				grow();
+			snake[0].y -= fieldSize;
+			if (snake[0].y <= 0 - fieldSize) {
+				alert("Das war ein Crash. GAME OVER");
+				restart();
 			}
 		}
 	}
 
 	if (direction === "down") {
-		snake[0].y += fieldSize;
-		//
-		if (snake[0].y >= 700 - fieldSize) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
+		if (checkIfFood()) {
+			grow();
+			newFood();
 		} else {
-			if (checkIfFood()) {
-				grow();
+			snake[0].y += fieldSize;
+			if (snake[0].y >= 700 - fieldSize) {
+				alert("Das war ein Crash. GAME OVER");
+				restart();
 			}
 		}
 	}
 	if (direction === "left") {
-		snake[0].x -= fieldSize;
-		//
-		if (snake[0].x <= 0 - fieldSize) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
+		if (checkIfFood()) {
+			grow();
+			newFood();
 		} else {
-			if (checkIfFood()) {
-				grow();
+			snake[0].x -= fieldSize;
+			if (snake[0].x <= 0 - fieldSize) {
+				alert("Das war ein Crash. GAME OVER");
+				restart();
 			}
 		}
 	}
 	if (direction === "right") {
-		snake[0].x += fieldSize;
-		//
-		if (snake[0].x >= 700 - fieldSize) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
+		if (checkIfFood()) {
+			grow();
+			newFood();
 		} else {
-			if (checkIfFood()) {
-				grow();
+			snake[0].x += fieldSize;
+			if (snake[0].x >= 700 - fieldSize) {
+				alert("Das war ein Crash. GAME OVER");
+				restart();
 			}
 		}
 	}
-	// }
 }
 
 function grow() {
-	for (let lastPart = 0; lastPart < snake.length; ) {
-		if (direction === "up") {
-			snake.push({ x: snake[lastPart].x, y: (snake[lastPart].y += fieldSize) });
-			// snake[0].y -= fieldSize;
-		}
-		if (direction === "down") {
-			snake.push({ x: snake[lastPart].x, y: (snake[lastPart].y -= fieldSize) });
-			//snake[0].y += fieldSize;
-		}
-		if (direction === "right") {
-			snake.push({ x: (snake[lastPart].x -= fieldSize), y: snake[lastPart].y });
-			//snake[0].x += fieldSize;
-		}
-		if (direction === "left") {
-			snake.push({ x: (snake[lastPart].x += fieldSize), y: snake[lastPart].y });
-			//snake[0].x -= fieldSize;
-		}
-	}
+	snake.push({ x: apple.x, y: apple.y });
 }
 
 function restart() {
@@ -151,4 +131,5 @@ function restart() {
 	snake.length = 0;
 	apple = { x: 0, y: 0 };
 	speed = 2;
+	start();
 }
