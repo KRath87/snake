@@ -74,14 +74,14 @@ function checkIfFood() {
 function movement() {
 	if (direction === "up") {
 		snake.unshift({ x: snake[0].x, y: (snake[0].y -= fieldSize) });
+		console.log(snake);
 
 		if (snake[0].y <= 0 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else if (checkIfFood()) {
 			// grow();
-			console.log(snake);
-			console.log(apple);
+
 			newFood();
 		} else {
 			snake.pop();
@@ -97,8 +97,7 @@ if (direction === "down") {
 		restart();
 	} else if (checkIfFood()) {
 		// grow();
-		console.log(snake);
-		console.log(apple);
+
 		newFood();
 	} else {
 		snake.pop();
@@ -112,8 +111,7 @@ if (direction === "left") {
 		restart();
 	} else if (checkIfFood()) {
 		// grow();
-		console.log(snake);
-		console.log(apple);
+
 		newFood();
 	} else {
 		snake.pop();
@@ -127,8 +125,7 @@ if (direction === "right") {
 		restart();
 	} else if (checkIfFood()) {
 		// grow();
-		console.log(snake);
-		console.log(apple);
+
 		newFood();
 	} else {
 		snake.pop();
@@ -164,11 +161,10 @@ function render() {
 	food.style.left = apple.x.toString() + "px";
 	food.style.top = apple.y.toString() + "px";
 
-	const snakeBody = document.createElement("div");
-	snakeBody.id = "snake";
-	// playground.appendChild(snakeBody);
-
 	for (let runs = 0; runs < snake.length; runs++) {
+		const snakeBody = document.createElement("div");
+		snakeBody.id = "snake";
+
 		snakeBody.style.left = snake[runs].x.toString() + "px";
 		snakeBody.style.top = snake[runs].y.toString() + "px";
 		snakeBody.style.height = fieldSize.toString() + "px";
