@@ -1,3 +1,5 @@
+import "./style.css";
+
 const playground = <HTMLDivElement>document.getElementById("playground");
 
 for (let i = 0; i < 225; i++) {
@@ -41,6 +43,11 @@ function keyPress(event: KeyboardEvent) {
 
 function start() {
 	snake.push({ x: 7 * fieldSize, y: 7 * fieldSize });
+	const snakeGraphic = <HTMLDivElement>document.getElementById("snake");
+	snakeGraphic.style.top = snake[0].y.toString() + "px";
+	snakeGraphic.style.left = snake[0].x.toString() + "px";
+	snakeGraphic.style.height = fieldSize.toString() + "px";
+	snakeGraphic.style.width = fieldSize.toString() + "px";
 	newFood();
 	pace();
 }
@@ -54,7 +61,11 @@ function newFood() {
 			randomY = Math.floor(Math.random() * (15 - 1) + 1);
 		}
 	}
-	apple = { x: randomX, y: randomY };
+	apple = { x: randomX * fieldSize, y: randomY * fieldSize };
+
+	const food = <HTMLDivElement>document.getElementById("food");
+	food.style.top = apple.y.toString() + "px";
+	food.style.left = apple.x.toString() + "px";
 }
 
 function checkIfFood() {
