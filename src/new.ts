@@ -8,16 +8,18 @@ for (let i = 0; i < 225; i++) {
 	playground.appendChild(div);
 }
 
-const fieldSize = 700 / 15;
+const fieldSize = Math.round(700 / 15);
 
 let direction = "";
 
 const snake: { x: number; y: number }[] = [];
-const snakeGraphic = <HTMLDivElement>document.getElementById("snake");
 
-let apple: { x: number; y: number } = { x: 0, y: 0 };
+let apple: { x: number; y: number } = {
+	x: Math.floor(Math.random() * 15),
+	y: Math.floor(Math.random() * 15),
+};
 
-let speed = 2;
+let speed = 500;
 
 let intervalId = 0;
 
@@ -29,53 +31,42 @@ function keyPress(event: KeyboardEvent) {
 	const code = event.code;
 	if (code === "ArrowUp" || code === "KeyW") {
 		direction = "up";
-		movement();
 	} else if (code === "ArrowDown" || code === "KeyS") {
 		direction = "down";
-		movement();
 	} else if (code === "ArrowLeft" || code === "KeyA") {
 		direction = "left";
-		movement();
 	} else if (code === "ArrowRight" || code === "KeyD") {
 		direction = "right";
-		movement();
 	}
+	movement();
 }
 
 function start() {
 	snake.push({ x: 7 * fieldSize, y: 7 * fieldSize });
-
-	snakeGraphic.style.top = snake[0].y.toString() + "px";
-	snakeGraphic.style.left = snake[0].x.toString() + "px";
-	snakeGraphic.style.height = fieldSize.toString() + "px";
-	snakeGraphic.style.width = fieldSize.toString() + "px";
 	newFood();
 	pace();
 }
 
 function newFood() {
-	let randomX = Math.floor(Math.random() * (15 - 1) + 1);
-	let randomY = Math.floor(Math.random() * (15 - 1) + 1);
+	let randomX = Math.floor(Math.random() * 15);
+	let randomY = Math.floor(Math.random() * 15);
 	for (let position = 0; position < snake.length; position++) {
 		if (randomX === snake[position].x && randomY === snake[position].y) {
-			randomX = Math.floor(Math.random() * (15 - 1) + 1);
-			randomY = Math.floor(Math.random() * (15 - 1) + 1);
+			randomX = Math.floor(Math.random() * 15);
+			randomY = Math.floor(Math.random() * 15);
 		}
 	}
 	apple = { x: randomX * fieldSize, y: randomY * fieldSize };
-
-	const food = <HTMLDivElement>document.getElementById("food");
-	food.style.top = apple.y.toString() + "px";
-	food.style.left = apple.x.toString() + "px";
 }
 
 function checkIfFood() {
-	if (snake[0].x === apple.x && snake[0].y === apple.y) {
+	if (snake[0].y === apple.y && snake[0].x === apple.x) {
 		clearInterval(intervalId);
-		speed++;
+		speed = speed - 0.5;
 		if (speed > 10) {
 			speed = 10;
 		}
+		pace();
 		return true;
 	}
 }
@@ -89,74 +80,58 @@ function movement() {
 			restart();
 		} else if (checkIfFood()) {
 			// grow();
+			console.log(snake);
+			console.log(apple);
 			newFood();
 		} else {
 			snake.pop();
-		}
-		for (let i = 0; i < snake.length; i++) {
-			snakeGraphic.style.top = snake[i].y.toString() + "px";
-			snakeGraphic.style.left = snake[i].x.toString() + "px";
-			snakeGraphic.style.height = fieldSize.toString() + "px";
-			snakeGraphic.style.width = fieldSize.toString() + "px";
 		}
 	}
+}
 
-	if (direction === "down") {
-		snake.unshift({ x: snake[0].x, y: (snake[0].y += fieldSize) });
+if (direction === "down") {
+	snake.unshift({ x: snake[0].x, y: (snake[0].y += fieldSize) });
 
-		if (snake[0].y >= 700 - fieldSize) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
-		} else if (checkIfFood()) {
-			// grow();
-			newFood();
-		} else {
-			snake.pop();
-		}
-		for (let i = 0; i < snake.length; i++) {
-			snakeGraphic.style.top = snake[i].y.toString() + "px";
-			snakeGraphic.style.left = snake[i].x.toString() + "px";
-			snakeGraphic.style.height = fieldSize.toString() + "px";
-			snakeGraphic.style.width = fieldSize.toString() + "px";
-		}
+	if (snake[0].y >= 700 - fieldSize) {
+		alert("Das war ein Crash. GAME OVER");
+		restart();
+	} else if (checkIfFood()) {
+		// grow();
+		console.log(snake);
+		console.log(apple);
+		newFood();
+	} else {
+		snake.pop();
 	}
-	if (direction === "left") {
-		snake.unshift({ x: (snake[0].x -= fieldSize), y: snake[0].y });
+}
+if (direction === "left") {
+	snake.unshift({ x: (snake[0].x -= fieldSize), y: snake[0].y });
 
-		if (snake[0].x <= 0 - fieldSize) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
-		} else if (checkIfFood()) {
-			// grow();
-			newFood();
-		} else {
-			snake.pop();
-		}
-		for (let i = 0; i < snake.length; i++) {
-			snakeGraphic.style.top = snake[i].y.toString() + "px";
-			snakeGraphic.style.left = snake[i].x.toString() + "px";
-			snakeGraphic.style.height = fieldSize.toString() + "px";
-			snakeGraphic.style.width = fieldSize.toString() + "px";
-		}
+	if (snake[0].x <= 0 - fieldSize) {
+		alert("Das war ein Crash. GAME OVER");
+		restart();
+	} else if (checkIfFood()) {
+		// grow();
+		console.log(snake);
+		console.log(apple);
+		newFood();
+	} else {
+		snake.pop();
 	}
-	if (direction === "right") {
-		snake.unshift({ x: (snake[0].x += fieldSize), y: snake[0].y });
+}
+if (direction === "right") {
+	snake.unshift({ x: (snake[0].x += fieldSize), y: snake[0].y });
 
-		if (snake[0].x >= 700 - fieldSize) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
-		} else if (checkIfFood()) {
-			// grow();
-			newFood();
-		} else {
-			snake.pop();
-		}
-		for (let i = 0; i < snake.length; i++) {
-			snakeGraphic.style.top = snake[i].y.toString() + "px";
-			snakeGraphic.style.left = snake[i].x.toString() + "px";
-			snakeGraphic.style.height = fieldSize.toString() + "px";
-			snakeGraphic.style.width = fieldSize.toString() + "px";
-		}
+	if (snake[0].x >= 700 - fieldSize) {
+		alert("Das war ein Crash. GAME OVER");
+		restart();
+	} else if (checkIfFood()) {
+		// grow();
+		console.log(snake);
+		console.log(apple);
+		newFood();
+	} else {
+		snake.pop();
 	}
 }
 
@@ -167,12 +142,37 @@ function movement() {
 function restart() {
 	direction = "";
 	snake.length = 0;
-	apple = { x: 0, y: 0 };
+	apple = {
+		x: Math.floor(Math.random() * 15),
+		y: Math.floor(Math.random() * 15),
+	};
 	speed = 2;
 	start();
 }
 
 function pace() {
-	const tempo = 1000 / speed;
-	intervalId = setInterval(movement, tempo);
+	intervalId = setInterval(() => {
+		movement();
+		render();
+	}, speed);
+}
+function render() {
+	const food = document.createElement("div");
+	food.id = "food";
+	playground.appendChild(food);
+
+	food.style.left = apple.x.toString() + "px";
+	food.style.top = apple.y.toString() + "px";
+
+	const snakeBody = document.createElement("div");
+	snakeBody.id = "snake";
+	// playground.appendChild(snakeBody);
+
+	for (let runs = 0; runs < snake.length; runs++) {
+		snakeBody.style.left = snake[runs].x.toString() + "px";
+		snakeBody.style.top = snake[runs].y.toString() + "px";
+		snakeBody.style.height = fieldSize.toString() + "px";
+		snakeBody.style.width = fieldSize.toString() + "px";
+		playground.appendChild(snakeBody);
+	}
 }
