@@ -13,6 +13,7 @@ const fieldSize = 700 / 15;
 let direction = "";
 
 const snake: { x: number; y: number }[] = [];
+const snakeGraphic = <HTMLDivElement>document.getElementById("snake");
 
 let apple: { x: number; y: number } = { x: 0, y: 0 };
 
@@ -43,7 +44,7 @@ function keyPress(event: KeyboardEvent) {
 
 function start() {
 	snake.push({ x: 7 * fieldSize, y: 7 * fieldSize });
-	const snakeGraphic = <HTMLDivElement>document.getElementById("snake");
+
 	snakeGraphic.style.top = snake[0].y.toString() + "px";
 	snakeGraphic.style.left = snake[0].x.toString() + "px";
 	snakeGraphic.style.height = fieldSize.toString() + "px";
@@ -92,6 +93,12 @@ function movement() {
 		} else {
 			snake.pop();
 		}
+		for (let i = 0; i < snake.length; i++) {
+			snakeGraphic.style.top = snake[i].y.toString() + "px";
+			snakeGraphic.style.left = snake[i].x.toString() + "px";
+			snakeGraphic.style.height = fieldSize.toString() + "px";
+			snakeGraphic.style.width = fieldSize.toString() + "px";
+		}
 	}
 
 	if (direction === "down") {
@@ -106,6 +113,12 @@ function movement() {
 		} else {
 			snake.pop();
 		}
+		for (let i = 0; i < snake.length; i++) {
+			snakeGraphic.style.top = snake[i].y.toString() + "px";
+			snakeGraphic.style.left = snake[i].x.toString() + "px";
+			snakeGraphic.style.height = fieldSize.toString() + "px";
+			snakeGraphic.style.width = fieldSize.toString() + "px";
+		}
 	}
 	if (direction === "left") {
 		snake.unshift({ x: (snake[0].x -= fieldSize), y: snake[0].y });
@@ -119,6 +132,12 @@ function movement() {
 		} else {
 			snake.pop();
 		}
+		for (let i = 0; i < snake.length; i++) {
+			snakeGraphic.style.top = snake[i].y.toString() + "px";
+			snakeGraphic.style.left = snake[i].x.toString() + "px";
+			snakeGraphic.style.height = fieldSize.toString() + "px";
+			snakeGraphic.style.width = fieldSize.toString() + "px";
+		}
 	}
 	if (direction === "right") {
 		snake.unshift({ x: (snake[0].x += fieldSize), y: snake[0].y });
@@ -131,6 +150,12 @@ function movement() {
 			newFood();
 		} else {
 			snake.pop();
+		}
+		for (let i = 0; i < snake.length; i++) {
+			snakeGraphic.style.top = snake[i].y.toString() + "px";
+			snakeGraphic.style.left = snake[i].x.toString() + "px";
+			snakeGraphic.style.height = fieldSize.toString() + "px";
+			snakeGraphic.style.width = fieldSize.toString() + "px";
 		}
 	}
 }
