@@ -16,6 +16,8 @@ let apple: { x: number; y: number } = { x: 0, y: 0 };
 
 let speed = 2;
 
+let intervalId = 0;
+
 document.addEventListener("keydown", keyPress);
 
 start();
@@ -23,19 +25,15 @@ start();
 function keyPress(event: KeyboardEvent) {
 	const code = event.code;
 	if (code === "ArrowUp" || code === "KeyW") {
-		//up
 		direction = "up";
 		movement();
 	} else if (code === "ArrowDown" || code === "KeyS") {
-		//down
 		direction = "down";
 		movement();
 	} else if (code === "ArrowLeft" || code === "KeyA") {
-		//left
 		direction = "left";
 		movement();
 	} else if (code === "ArrowRight" || code === "KeyD") {
-		//right
 		direction = "right";
 		movement();
 	}
@@ -50,14 +48,20 @@ function start() {
 			y: Math.random() * (15 - 1) + 1,
 		};
 	}
+	pace();
 }
 
 function newFood() {
-	const randomX = Math.floor(Math.random() * (15 - 1) + 1);
-	const randomY = Math.floor(Math.random() * (15 - 1) + 1);
-
+	let randomX = Math.floor(Math.random() * (15 - 1) + 1);
+	let randomY = Math.floor(Math.random() * (15 - 1) + 1);
+	for (let e = 0; e < snake.length; e++) {
+		if (randomX === snake[e].x && randomY === snake[e].y) {
+			randomX = Math.floor(Math.random() * (15 - 1) + 1);
+			randomY = Math.floor(Math.random() * (15 - 1) + 1);
+		}
+	}
 	apple = { x: randomX, y: randomY };
-
+	clearInterval(intervalId);
 	speed++;
 	if (speed > 10) {
 		speed = 10;
@@ -72,58 +76,62 @@ function checkIfFood() {
 
 function movement() {
 	if (direction === "up") {
-		if (checkIfFood()) {
+		snake[0].y -= fieldSize;
+		for (let i = 1; i < snake.length; i++) {
+			snake[i] = snake[i + 1];
+		}
+		if (snake[0].y <= 0 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else if (checkIfFood()) {
 			grow();
 			newFood();
-		} else {
-			snake[0].y -= fieldSize;
-			if (snake[0].y <= 0 - fieldSize) {
-				alert("Das war ein Crash. GAME OVER");
-				restart();
-			}
 		}
 	}
 
 	if (direction === "down") {
-		if (checkIfFood()) {
+		snake[0].y += fieldSize;
+		for (let i = 1; i < snake.length; i++) {
+			snake[i] = snake[i + 1];
+		}
+		if (snake[0].y >= 700 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else if (checkIfFood()) {
 			grow();
 			newFood();
-		} else {
-			snake[0].y += fieldSize;
-			if (snake[0].y >= 700 - fieldSize) {
-				alert("Das war ein Crash. GAME OVER");
-				restart();
-			}
 		}
 	}
 	if (direction === "left") {
-		if (checkIfFood()) {
+		snake[0].x -= fieldSize;
+		for (let i = 1; i < snake.length; i++) {
+			snake[i] = snake[i + 1];
+		}
+		if (snake[0].x <= 0 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else if (checkIfFood()) {
 			grow();
 			newFood();
-		} else {
-			snake[0].x -= fieldSize;
-			if (snake[0].x <= 0 - fieldSize) {
-				alert("Das war ein Crash. GAME OVER");
-				restart();
-			}
 		}
 	}
 	if (direction === "right") {
-		if (checkIfFood()) {
+		snake[0].x += fieldSize;
+		for (let i = 1; i < snake.length; i++) {
+			snake[i] = snake[i + 1];
+		}
+		if (snake[0].x >= 700 - fieldSize) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		} else if (checkIfFood()) {
 			grow();
 			newFood();
-		} else {
-			snake[0].x += fieldSize;
-			if (snake[0].x >= 700 - fieldSize) {
-				alert("Das war ein Crash. GAME OVER");
-				restart();
-			}
 		}
 	}
 }
 
 function grow() {
-	snake.push({ x: apple.x, y: apple.y });
+	snake.unshift({ x: apple.x, y: apple.y });
 }
 
 function restart() {
@@ -132,4 +140,8 @@ function restart() {
 	apple = { x: 0, y: 0 };
 	speed = 2;
 	start();
+}
+
+function pace() {
+	intervalId = setInterval(movement, speed);
 }
