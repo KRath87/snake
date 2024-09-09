@@ -76,56 +76,56 @@ function checkIfFood() {
 
 function movement() {
 	if (direction === "up") {
-		snake[0].y -= fieldSize;
-		for (let i = 1; i < snake.length; i++) {
-			snake[i] = snake[i + 1];
-		}
+		snake.unshift({ x: snake[0].x, y: (snake[0].y -= fieldSize) });
+
 		if (snake[0].y <= 0 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else if (checkIfFood()) {
 			grow();
 			newFood();
+		} else {
+			snake.pop();
 		}
 	}
 
 	if (direction === "down") {
-		snake[0].y += fieldSize;
-		for (let i = 1; i < snake.length; i++) {
-			snake[i] = snake[i + 1];
-		}
+		snake.unshift({ x: snake[0].x, y: (snake[0].y += fieldSize) });
+
 		if (snake[0].y >= 700 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else if (checkIfFood()) {
 			grow();
 			newFood();
+		} else {
+			snake.pop();
 		}
 	}
 	if (direction === "left") {
-		snake[0].x -= fieldSize;
-		for (let i = 1; i < snake.length; i++) {
-			snake[i] = snake[i + 1];
-		}
+		snake.unshift({ x: (snake[0].x -= fieldSize), y: snake[0].y });
+
 		if (snake[0].x <= 0 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else if (checkIfFood()) {
 			grow();
 			newFood();
+		} else {
+			snake.pop();
 		}
 	}
 	if (direction === "right") {
-		snake[0].x += fieldSize;
-		for (let i = 1; i < snake.length; i++) {
-			snake[i] = snake[i + 1];
-		}
+		snake.unshift({ x: (snake[0].x += fieldSize), y: snake[0].y });
+
 		if (snake[0].x >= 700 - fieldSize) {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else if (checkIfFood()) {
 			grow();
 			newFood();
+		} else {
+			snake.pop();
 		}
 	}
 }
