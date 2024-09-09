@@ -67,7 +67,6 @@ function newFood() {
 function checkIfFood() {
 	if (snake[0].x === apple.x && snake[0].y === apple.y) {
 		newFood();
-		grow();
 		return true;
 	}
 }
@@ -127,20 +126,29 @@ function movement() {
 }
 
 function grow() {
-	if (direction === "up") {
-		//
-	}
-	if (direction === "down") {
-		//
-	}
-	if (direction === "right") {
-		//
-	}
-	if (direction === "left") {
-		//
+	for (let lastPart = 0; lastPart < snake.length; ) {
+		if (direction === "up") {
+			snake.push({ x: snake[lastPart].x, y: (snake[lastPart].y += fieldSize) });
+			// snake[0].y -= fieldSize;
+		}
+		if (direction === "down") {
+			snake.push({ x: snake[lastPart].x, y: (snake[lastPart].y -= fieldSize) });
+			//snake[0].y += fieldSize;
+		}
+		if (direction === "right") {
+			snake.push({ x: (snake[lastPart].x -= fieldSize), y: snake[lastPart].y });
+			//snake[0].x += fieldSize;
+		}
+		if (direction === "left") {
+			snake.push({ x: (snake[lastPart].x += fieldSize), y: snake[lastPart].y });
+			//snake[0].x -= fieldSize;
+		}
 	}
 }
 
 function restart() {
-	//
+	direction = "";
+	snake.length = 0;
+	apple = { x: 0, y: 0 };
+	speed = 2;
 }
