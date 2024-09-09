@@ -41,35 +41,29 @@ function keyPress(event: KeyboardEvent) {
 
 function start() {
 	snake.push({ x: 7 * fieldSize, y: 7 * fieldSize });
-	apple = { x: Math.random() * (15 - 1) + 1, y: Math.random() * (15 - 1) + 1 };
-	if (snake[0].x === apple.x && snake[0].y === apple.y) {
-		apple = {
-			x: 13 * fieldSize,
-			y: Math.random() * (15 - 1) + 1,
-		};
-	}
+	newFood();
 	pace();
 }
 
 function newFood() {
 	let randomX = Math.floor(Math.random() * (15 - 1) + 1);
 	let randomY = Math.floor(Math.random() * (15 - 1) + 1);
-	for (let e = 0; e < snake.length; e++) {
-		if (randomX === snake[e].x && randomY === snake[e].y) {
+	for (let position = 0; position < snake.length; position++) {
+		if (randomX === snake[position].x && randomY === snake[position].y) {
 			randomX = Math.floor(Math.random() * (15 - 1) + 1);
 			randomY = Math.floor(Math.random() * (15 - 1) + 1);
 		}
 	}
 	apple = { x: randomX, y: randomY };
-	clearInterval(intervalId);
-	speed++;
-	if (speed > 10) {
-		speed = 10;
-	}
 }
 
 function checkIfFood() {
 	if (snake[0].x === apple.x && snake[0].y === apple.y) {
+		clearInterval(intervalId);
+		speed++;
+		if (speed > 10) {
+			speed = 10;
+		}
 		return true;
 	}
 }
@@ -82,7 +76,7 @@ function movement() {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else if (checkIfFood()) {
-			grow();
+			// grow();
 			newFood();
 		} else {
 			snake.pop();
@@ -96,7 +90,7 @@ function movement() {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else if (checkIfFood()) {
-			grow();
+			// grow();
 			newFood();
 		} else {
 			snake.pop();
@@ -109,7 +103,7 @@ function movement() {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else if (checkIfFood()) {
-			grow();
+			// grow();
 			newFood();
 		} else {
 			snake.pop();
@@ -122,7 +116,7 @@ function movement() {
 			alert("Das war ein Crash. GAME OVER");
 			restart();
 		} else if (checkIfFood()) {
-			grow();
+			// grow();
 			newFood();
 		} else {
 			snake.pop();
@@ -130,9 +124,9 @@ function movement() {
 	}
 }
 
-function grow() {
-	snake.unshift({ x: apple.x, y: apple.y });
-}
+// function grow() {
+// 	snake.unshift({ x: apple.x, y: apple.y });
+// }
 
 function restart() {
 	direction = "";
@@ -143,5 +137,6 @@ function restart() {
 }
 
 function pace() {
-	intervalId = setInterval(movement, speed);
+	const tempo = 1000 / speed;
+	intervalId = setInterval(movement, tempo);
 }
