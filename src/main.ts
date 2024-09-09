@@ -48,7 +48,7 @@ snake.style.width = fieldSize.toString() + "px";
 // newSnake.style.top = fieldSize.toString() + "px";
 
 const movingSnake: HTMLDivElement[] = [];
-movingSnake[foodCount] = snake;
+movingSnake[0] = snake;
 
 const food = <HTMLDivElement>document.getElementById("food");
 food.style.top = positionFood.y.toString() + "px";
@@ -204,9 +204,11 @@ function moveUp() {
 		alert("Das war ein Crash. GAME OVER");
 		restart();
 	} else {
-		movingSnake[foodCount].style.top = position.y.toString() + "px";
-		if (checkIfFood()) {
-			growBottom();
+		for (let i = 0; i < movingSnake.length; i++) {
+			movingSnake[foodCount - i].style.top = position.y.toString() + "px";
+			if (checkIfFood()) {
+				growBottom();
+			}
 		}
 	}
 }
@@ -273,4 +275,19 @@ function move() {
 
 function pace() {
 	intervalId = setInterval(move, speed);
+}
+
+function grow() {
+	if (direction === "up") {
+		//
+	}
+	if (direction === "down") {
+		//
+	}
+	if (direction === "right") {
+		//
+	}
+	if (direction === "left") {
+		//
+	}
 }
