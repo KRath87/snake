@@ -41,3 +41,15 @@
 	position: absolute;
 	z-index: 1;
 }
+
+#playground .start {
+	height: 100px;
+	width: 180px;
+	position: absolute;
+	margin-top: 50%;
+	margin-left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 50px;
+
+	z-index: 2;
+}

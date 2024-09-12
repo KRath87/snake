@@ -2,11 +2,16 @@ import "./style.css";
 
 const playground = <HTMLDivElement>document.getElementById("playground");
 
-for (let i = 0; i < 225; i++) {
+for (let boardSize = 0; boardSize < 225; boardSize++) {
 	const div = document.createElement("div");
 	div.classList.add("board");
 	playground.appendChild(div);
 }
+
+const startButton = document.createElement("button");
+startButton.classList.add("start");
+playground.appendChild(startButton);
+startButton.innerHTML = " Start";
 
 const fieldSize = 700 / 15;
 
@@ -26,7 +31,7 @@ let intervalId = 0;
 
 document.addEventListener("keydown", keyPress);
 
-start();
+startButton.addEventListener("click", start);
 
 function keyPress(event: KeyboardEvent) {
 	const code = event.code;
@@ -42,6 +47,7 @@ function keyPress(event: KeyboardEvent) {
 }
 
 function start() {
+	startButton.style.visibility = "hidden";
 	snake.push({ x: 7, y: 7 });
 	newFood();
 	pace();
@@ -114,24 +120,22 @@ function movement() {
 	if (direction === "up") {
 		lastDirection = "up";
 		snake.unshift({ x: snake[0].x, y: snake[0].y - 1 });
-		checkIfCrash();
 	} else if (direction === "down") {
 		lastDirection = "down";
 		snake.unshift({ x: snake[0].x, y: snake[0].y + 1 });
-		checkIfCrash();
 	} else if (direction === "left") {
 		lastDirection = "left";
 		snake.unshift({ x: snake[0].x - 1, y: snake[0].y });
-		checkIfCrash();
 	} else if (direction === "right") {
 		lastDirection = "right";
 		snake.unshift({ x: snake[0].x + 1, y: snake[0].y });
-		checkIfCrash();
 	}
+	checkIfCrash();
 	if (checkIfFood()) {
 		newFood();
 	} else {
 		snake.pop();
+		console.log(snake);
 	}
 }
 
@@ -142,8 +146,7 @@ function restart() {
 	snake.splice(0);
 	speed = 2;
 	snake.push({ x: 7, y: 7 });
-
-	start();
+	startButton.style.visibility = "visible";
 }
 
 function pace() {
@@ -152,6 +155,7 @@ function pace() {
 		render();
 	}, 1000 / speed);
 }
+
 function render() {
 	const oldThings = document.querySelectorAll(".snake,.food");
 	for (const thing of oldThings) {
