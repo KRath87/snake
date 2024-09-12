@@ -23,7 +23,10 @@
 
 #playground > .snake {
 	background-color: var(--green);
+
+	border-radius: 50%;
 	transform: translate(-50%, -50%);
+
 	position: absolute;
 	z-index: 2;
 }

@@ -10,8 +10,8 @@ for (let i = 0; i < 225; i++) {
 
 const fieldSize = 700 / 15;
 
-let direction = "";
-let lastDirection = "";
+let direction = "right";
+let lastDirection = "right";
 
 const snake: { x: number; y: number }[] = [];
 
@@ -20,7 +20,7 @@ let apple: { x: number; y: number } = {
 	y: Math.floor(Math.random() * 15),
 };
 
-let speed = 4;
+let speed = 2;
 
 let intervalId = 0;
 
@@ -63,8 +63,8 @@ function checkIfFood() {
 	if (snake[0].y === apple.y && snake[0].x === apple.x) {
 		clearInterval(intervalId);
 		speed = speed + 0.1;
-		if (speed > 12) {
-			speed = 12;
+		if (speed > 15) {
+			speed = 15;
 		}
 		pace();
 		return true;
@@ -72,6 +72,7 @@ function checkIfFood() {
 }
 
 function checkIfCrash() {
+	console.log(snake[0].y);
 	for (let body = 1; body < snake.length; body++) {
 		if (snake[0].x === snake[body].x && snake[0].y === snake[body].y) {
 			alert("Das war ein Crash. GAME OVER");
@@ -108,57 +109,38 @@ function checkDirection() {
 		direction = "left";
 	}
 }
-
 function movement() {
 	checkDirection();
 	if (direction === "up") {
 		lastDirection = "up";
 		snake.unshift({ x: snake[0].x, y: snake[0].y - 1 });
 		checkIfCrash();
-		if (checkIfFood()) {
-			newFood();
-		} else {
-			snake.pop();
-		}
-	}
-	if (direction === "down") {
+	} else if (direction === "down") {
 		lastDirection = "down";
 		snake.unshift({ x: snake[0].x, y: snake[0].y + 1 });
 		checkIfCrash();
-		if (checkIfFood()) {
-			newFood();
-		} else {
-			snake.pop();
-		}
-	}
-	if (direction === "left") {
+	} else if (direction === "left") {
 		lastDirection = "left";
 		snake.unshift({ x: snake[0].x - 1, y: snake[0].y });
 		checkIfCrash();
-		if (checkIfFood()) {
-			newFood();
-		} else {
-			snake.pop();
-		}
-	}
-	if (direction === "right") {
+	} else if (direction === "right") {
 		lastDirection = "right";
 		snake.unshift({ x: snake[0].x + 1, y: snake[0].y });
 		checkIfCrash();
-		if (checkIfFood()) {
-			newFood();
-		} else {
-			snake.pop();
-		}
+	}
+	if (checkIfFood()) {
+		newFood();
+	} else {
+		snake.pop();
 	}
 }
 
 function restart() {
 	clearInterval(intervalId);
-	direction = "";
-	lastDirection = "";
+	direction = "right";
+	lastDirection = "right";
 	snake.splice(0);
-	speed = 4;
+	speed = 2;
 	snake.push({ x: 7, y: 7 });
 
 	start();
@@ -186,6 +168,7 @@ function render() {
 	for (let runs = 0; runs < snake.length; runs++) {
 		const snakeBody = document.createElement("div");
 		snakeBody.classList.add("snake");
+
 		snakeBody.style.left = getPosition(snake[runs].x).toString() + "px";
 		snakeBody.style.top = getPosition(snake[runs].y).toString() + "px";
 		snakeBody.style.height = fieldSize.toString() + "px";
