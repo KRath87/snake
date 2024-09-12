@@ -4,7 +4,7 @@ const playground = <HTMLDivElement>document.getElementById("playground");
 
 for (let i = 0; i < 225; i++) {
 	const div = document.createElement("div");
-
+	div.classList.add("board");
 	playground.appendChild(div);
 }
 
@@ -19,7 +19,7 @@ let apple: { x: number; y: number } = {
 	y: Math.floor(Math.random() * 15),
 };
 
-let speed = 500;
+let speed = 5;
 
 let intervalId = 0;
 
@@ -38,11 +38,10 @@ function keyPress(event: KeyboardEvent) {
 	} else if (code === "ArrowRight" || code === "KeyD") {
 		direction = "right";
 	}
-	movement();
 }
 
 function start() {
-	snake.push({ x: getPosition(7), y: getPosition(7) });
+	snake.push({ x: 7, y: 7 });
 	newFood();
 	pace();
 }
@@ -62,7 +61,7 @@ function newFood() {
 function checkIfFood() {
 	if (snake[0].y === apple.y && snake[0].x === apple.x) {
 		clearInterval(intervalId);
-		speed = speed - 0.5;
+		speed = speed + 0.1;
 		if (speed > 10) {
 			speed = 10;
 		}
@@ -71,17 +70,65 @@ function checkIfFood() {
 	}
 }
 
+function checkIfCrash() {
+	for (let body = 1; body < snake.length; body++) {
+		if (snake[0].x === snake[body].x && snake[0].y === snake[body].y) {
+			alert("Das war ein Crash. GAME OVER");
+			restart();
+		}
+	}
+
+	if (snake[0].y < 0) {
+		alert("Das war ein Crash. GAME OVER");
+		restart();
+	} else if (snake[0].y > 14) {
+		alert("Das war ein Crash. GAME OVER");
+		restart();
+	} else if (snake[0].x < 0) {
+		alert("Das war ein Crash. GAME OVER");
+		restart();
+	} else if (snake[0].x > 14) {
+		alert("Das war ein Crash. GAME OVER");
+		restart();
+	}
+}
 function movement() {
 	if (direction === "up") {
 		snake.unshift({ x: snake[0].x, y: snake[0].y - 1 });
-		console.log(snake);
+		checkIfCrash();
 
-		if (snake[0].y < 0) {
-			alert("Das war ein Crash. GAME OVER");
-			restart();
-		} else if (checkIfFood()) {
-			// grow();
+		if (checkIfFood()) {
+			newFood();
+		} else {
+			snake.pop();
+		}
+	}
 
+	if (direction === "down") {
+		snake.unshift({ x: snake[0].x, y: snake[0].y + 1 });
+		checkIfCrash();
+
+		if (checkIfFood()) {
+			newFood();
+		} else {
+			snake.pop();
+		}
+	}
+	if (direction === "left") {
+		snake.unshift({ x: snake[0].x - 1, y: snake[0].y });
+		checkIfCrash();
+
+		if (checkIfFood()) {
+			newFood();
+		} else {
+			snake.pop();
+		}
+	}
+	if (direction === "right") {
+		snake.unshift({ x: snake[0].x + 1, y: snake[0].y });
+		checkIfCrash();
+
+		if (checkIfFood()) {
 			newFood();
 		} else {
 			snake.pop();
@@ -89,57 +136,11 @@ function movement() {
 	}
 }
 
-if (direction === "down") {
-	snake.unshift({ x: snake[0].x, y: snake[0].y + 1 });
-	console.log(snake);
-	if (snake[0].y > 14) {
-		alert("Das war ein Crash. GAME OVER");
-		restart();
-	} else if (checkIfFood()) {
-		// grow();
-
-		newFood();
-	} else {
-		snake.pop();
-	}
-}
-if (direction === "left") {
-	snake.unshift({ x: snake[0].x - 1, y: snake[0].y });
-	console.log(snake);
-	if (snake[0].x < 0) {
-		alert("Das war ein Crash. GAME OVER");
-		restart();
-	} else if (checkIfFood()) {
-		// grow();
-
-		newFood();
-	} else {
-		snake.pop();
-	}
-}
-if (direction === "right") {
-	snake.unshift({ x: snake[0].x + 1, y: snake[0].y });
-	console.log(snake);
-	if (snake[0].x > 14) {
-		alert("Das war ein Crash. GAME OVER");
-		restart();
-	} else if (checkIfFood()) {
-		// grow();
-
-		newFood();
-	} else {
-		snake.pop();
-	}
-}
-
 function restart() {
 	direction = "";
 	snake.length = 0;
-	apple = {
-		x: Math.floor(Math.random() * 15),
-		y: Math.floor(Math.random() * 15),
-	};
 	speed = 2;
+	clearInterval(intervalId);
 	start();
 }
 
@@ -147,24 +148,26 @@ function pace() {
 	intervalId = setInterval(() => {
 		movement();
 		render();
-	}, speed);
+	}, 1000 / speed);
 }
 function render() {
+	const oldThings = document.querySelectorAll(".snake,.food");
+	for (const thing of oldThings) {
+		thing.remove();
+	}
+
 	const food = document.createElement("div");
-	food.id = "food";
+	food.classList.add("food");
 	playground.appendChild(food);
 
 	food.style.left = getPosition(apple.x).toString() + "px";
 	food.style.top = getPosition(apple.y).toString() + "px";
-	// console.log(apple.y);
-	// console.log(apple.x);
 
 	for (let runs = 0; runs < snake.length; runs++) {
 		const snakeBody = document.createElement("div");
-		snakeBody.id = "snake";
-
-		snakeBody.style.left = snake[runs].x.toString() + "px";
-		snakeBody.style.top = snake[runs].y.toString() + "px";
+		snakeBody.classList.add("snake");
+		snakeBody.style.left = getPosition(snake[runs].x).toString() + "px";
+		snakeBody.style.top = getPosition(snake[runs].y).toString() + "px";
 		snakeBody.style.height = fieldSize.toString() + "px";
 		snakeBody.style.width = fieldSize.toString() + "px";
 		playground.appendChild(snakeBody);

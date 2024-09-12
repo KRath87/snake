@@ -15,6 +15,7 @@ export default [
 	{
 		rules: {
 			"@typescript-eslint/no-non-null-assertion": "warn",
+			"@typescript-eslint/non-nullable-type-assertion-style": "never",
 			"no-constant-binary-expression": "error",
 			"no-duplicate-imports": "error",
 			"no-template-curly-in-string": "error",

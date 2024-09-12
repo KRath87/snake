@@ -14,21 +14,21 @@
 	position: relative;
 }
 
-#playground > div:nth-child(even) {
+#playground > .board:nth-child(even) {
 	background-color: var(--grey);
 }
-#playground > div:nth-child(odd) {
+#playground > .board:nth-child(odd) {
 	background-color: var(--blue);
 }
 
-#playground #snake {
+#playground > .snake {
 	background-color: var(--green);
 	transform: translate(-50%, -50%);
 	position: absolute;
 	z-index: 2;
 }
 
-#playground #food {
+#playground > .food {
 	height: 30px;
 	width: 30px;
 	border-radius: 50%;
