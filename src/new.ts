@@ -28,6 +28,8 @@ let apple: { x: number; y: number } = {
 let speed = 2;
 
 let intervalId = 0;
+//MARK:TASK: ADD APPLECOUNT
+let appleCount = 5;
 
 document.addEventListener("keydown", keyPress);
 
@@ -54,6 +56,7 @@ function start() {
 }
 
 function newFood() {
+	// for (let a=0; a<5;a++){
 	let randomX = Math.floor(Math.random() * 15);
 	let randomY = Math.floor(Math.random() * 15);
 	for (let position = 0; position < snake.length; position++) {
@@ -63,10 +66,13 @@ function newFood() {
 		}
 	}
 	apple = { x: randomX, y: randomY };
+	countApples();
+	// }
 }
 
 function checkIfFood() {
 	if (snake[0].y === apple.y && snake[0].x === apple.x) {
+		appleCount--;
 		clearInterval(intervalId);
 		speed = speed + 0.1;
 		if (speed > 15) {
@@ -183,4 +189,10 @@ function render() {
 
 function getPosition(index: number) {
 	return index * fieldSize + fieldSize / 2;
+}
+
+function countApples() {
+	if (appleCount < 5) {
+		newFood();
+	}
 }
