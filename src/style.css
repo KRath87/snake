@@ -22,8 +22,8 @@
 }
 
 #playground #snake {
-	font-size: 20px;
 	background-color: var(--green);
+	transform: translate(-50%, -50%);
 	position: absolute;
 	z-index: 2;
 }
@@ -32,10 +32,8 @@
 	height: 30px;
 	width: 30px;
 	border-radius: 50%;
-	margin-left: 1%;
-	margin-top: 1%;
-	font-size: 20px;
-	color: var(--black);
+	transform: translate(-50%, -50%);
+
 	background-color: var(--red);
 	position: absolute;
 	z-index: 1;
