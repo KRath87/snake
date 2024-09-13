@@ -92,31 +92,57 @@ function start() {
 	pace();
 }
 
+// function newFood() {
+// 	let array = [];
+// 	if (whichFood === "apple") {
+// 		array = appleField;
+// 	} else if (whichFood === "pear") {
+// 		array = pearField;
+// 	}
+// 	let randomX = Math.floor(Math.random() * 15);
+// 	let randomY = Math.floor(Math.random() * 15);
+// 	for (let position = 0; position < snake.length; position++) {
+// 		for (
+// 			let holePosition = 0;
+// 			holePosition < brokenGround.length;
+// 			holePosition++
+// 		) {
+// 			if (
+// 				(randomX === snake[position].x && randomY === snake[position].y) ||
+// 				(randomX === brokenGround[holePosition].x &&
+// 					randomY === brokenGround[holePosition].y)
+// 			) {
+// 				randomX = Math.floor(Math.random() * 15);
+// 				randomY = Math.floor(Math.random() * 15);
+// 			}
+// 		}
+// 	}
+// 	array.unshift({ x: randomX, y: randomY });
+// }
+
 function newFood() {
+	alreadyTakenFields();
 	let array = [];
+
+	let randomX = Math.floor(Math.random() * 15);
+	let randomY = Math.floor(Math.random() * 15);
+
 	if (whichFood === "apple") {
 		array = appleField;
 	} else if (whichFood === "pear") {
 		array = pearField;
 	}
-	let randomX = Math.floor(Math.random() * 15);
-	let randomY = Math.floor(Math.random() * 15);
-	for (let position = 0; position < snake.length; position++) {
-		for (
-			let holePosition = 0;
-			holePosition < brokenGround.length;
-			holePosition++
+
+	for (let position = 0; position < takenFields.length; position++) {
+		if (
+			randomX === takenFields[position].x &&
+			randomY === takenFields[position].y
 		) {
-			if (
-				(randomX === snake[position].x && randomY === snake[position].y) ||
-				(randomX === brokenGround[holePosition].x &&
-					randomY === brokenGround[holePosition].y)
-			) {
-				randomX = Math.floor(Math.random() * 15);
-				randomY = Math.floor(Math.random() * 15);
-			}
+			randomX = Math.floor(Math.random() * 15);
+			randomY = Math.floor(Math.random() * 15);
 		}
 	}
+
 	array.unshift({ x: randomX, y: randomY });
 }
 
@@ -357,7 +383,7 @@ function buildHole() {
 	}
 }
 
-function isFieldTaken() {
+function alreadyTakenFields() {
 	let taken = 0;
 	console.log(snake.length);
 	console.log(snake);
@@ -369,22 +395,22 @@ function isFieldTaken() {
 	console.log(brokenGround);
 
 	for (let a = 0; a < snake.length; a++) {
-		takenFields[a] = snake[a];
+		takenFields.unshift({ x: snake[a].x, y: snake[a].y });
 	}
 	taken = snake.length;
 
-	for (let b = 0; appleField.length; b++) {
-		takenFields[taken + b] = appleField[b];
+	for (let b = 0; b < 5; b++) {
+		takenFields.unshift({ x: appleField[b].x, y: appleField[b].y });
 	}
 	taken = snake.length + appleField.length;
 
-	for (let c = 0; pearField.length; c++) {
-		takenFields[taken + c] = pearField[c];
+	for (let c = 0; c < 5; c++) {
+		takenFields.unshift({ x: pearField[c].x, y: pearField[c].y });
 	}
 	taken = snake.length + appleField.length + pearField.length;
 
 	for (let d = 0; d < brokenGround.length; d++) {
-		takenFields[taken + d] = brokenGround[d];
+		takenFields.unshift({ x: brokenGround[d].x, y: brokenGround[d].y });
 	}
 
 	taken =
@@ -393,4 +419,5 @@ function isFieldTaken() {
 	console.log(taken);
 	console.log(takenFields);
 	console.log(takenFields.length);
+	return takenFields;
 }
