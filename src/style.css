@@ -23,7 +23,8 @@
 }
 
 #playground > .snake {
-	background-color: var(--green);
+	/* background-color: var(--green); */
+	font-size: 40px;
 
 	border-radius: 50%;
 	transform: translate(-50%, -50%);
@@ -33,24 +34,19 @@
 }
 
 #playground > .apple {
-	height: 30px;
-	width: 30px;
+	font-size: 30px;
 	border-radius: 50%;
 	transform: translate(-50%, -50%);
 
-	background-color: var(--red);
 	position: absolute;
 	z-index: 1;
 }
 
 #playground > .pear {
-	height: 30px;
-	width: 30px;
-	border-radius: 10% 30% 50% 50%;
+	font-size: 30px;
 
 	transform: translate(-50%, -50%);
 
-	background-color: var(--darkgreen);
 	position: absolute;
 	z-index: 1;
 }
@@ -75,9 +71,8 @@
 }
 
 #playground .hole {
-	background-color: #202020;
-	height: 30px;
-	width: 30px;
+	font-size: 30px;
+
 	border-radius: 50%;
 	transform: translate(-50%, -50%);
 	color: antiquewhite;

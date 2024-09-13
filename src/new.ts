@@ -36,7 +36,9 @@ const appleField: { x: number; y: number }[] = [];
 
 const pearField: { x: number; y: number }[] = [];
 
-const hole: { x: number; y: number }[] = [];
+const brokenGround: { x: number; y: number }[] = [];
+
+const takenFields: { x: number; y: number }[] = [];
 
 let whichFood = "";
 
@@ -81,7 +83,7 @@ function start() {
 			y: Math.floor(Math.random() * 15),
 		});
 	}
-	hole.push({
+	brokenGround.push({
 		x: -1,
 		y: -1,
 	});
@@ -100,10 +102,15 @@ function newFood() {
 	let randomX = Math.floor(Math.random() * 15);
 	let randomY = Math.floor(Math.random() * 15);
 	for (let position = 0; position < snake.length; position++) {
-		for (let holePosition = 0; holePosition < hole.length; holePosition++) {
+		for (
+			let holePosition = 0;
+			holePosition < brokenGround.length;
+			holePosition++
+		) {
 			if (
 				(randomX === snake[position].x && randomY === snake[position].y) ||
-				(randomX === hole[holePosition].x && randomY === hole[holePosition].y)
+				(randomX === brokenGround[holePosition].x &&
+					randomY === brokenGround[holePosition].y)
 			) {
 				randomX = Math.floor(Math.random() * 15);
 				randomY = Math.floor(Math.random() * 15);
@@ -156,8 +163,11 @@ function checkIfCrash() {
 			restart();
 		}
 	}
-	for (let position = 0; position < hole.length; position++) {
-		if (snake[0].x === hole[position].x && snake[0].y === hole[position].y) {
+	for (let position = 0; position < brokenGround.length; position++) {
+		if (
+			snake[0].x === brokenGround[position].x &&
+			snake[0].y === brokenGround[position].y
+		) {
 			alert("Das war ein Crash. GAME OVER");
 			checkHighscore();
 			restart();
@@ -223,21 +233,20 @@ function movement() {
 
 function restart() {
 	clearInterval(intervalId);
+
 	points = 0;
 	pointWriter.innerHTML = "Punkte: " + points.toString();
 	direction = "right";
 	lastDirection = "right";
 	snake.splice(0);
 	appleField.splice(0);
-	hole.splice(0);
+	pearField.splice(0);
+	brokenGround.splice(0);
 	speed = 2;
 	whichFood = "";
 	foodCount = 0;
 	snake.push({ x: 7, y: 7 });
-	hole.push({
-		x: -1,
-		y: -1,
-	});
+
 	for (let b = 0; b < 5; b++) {
 		appleField.push({
 			x: Math.floor(Math.random() * 15),
@@ -261,7 +270,7 @@ function pace() {
 }
 
 function render() {
-	const oldThings = document.querySelectorAll(".snake,.apple,.pear");
+	const oldThings = document.querySelectorAll(".snake,.apple,.pear,.hole");
 	for (const thing of oldThings) {
 		thing.remove();
 	}
@@ -271,6 +280,8 @@ function render() {
 		food.classList.add("apple");
 		food.style.left = getPosition(appleField[apples].x).toString() + "px";
 		food.style.top = getPosition(appleField[apples].y).toString() + "px";
+		food.innerHTML = "🍎";
+
 		playground.appendChild(food);
 	}
 
@@ -279,6 +290,7 @@ function render() {
 		moreFood.classList.add("pear");
 		moreFood.style.left = getPosition(pearField[pears].x).toString() + "px";
 		moreFood.style.top = getPosition(pearField[pears].y).toString() + "px";
+		moreFood.innerHTML = "🍐";
 		playground.appendChild(moreFood);
 	}
 
@@ -288,9 +300,20 @@ function render() {
 
 		snakeBody.style.left = getPosition(snake[runs].x).toString() + "px";
 		snakeBody.style.top = getPosition(snake[runs].y).toString() + "px";
-		snakeBody.style.height = fieldSize.toString() + "px";
-		snakeBody.style.width = fieldSize.toString() + "px";
+
+		snakeBody.innerHTML = "💠";
+
 		playground.appendChild(snakeBody);
+	}
+
+	for (let holes = 0; holes < brokenGround.length; holes++) {
+		const pit = document.createElement("div");
+		pit.classList.add("hole");
+		pit.style.left = getPosition(brokenGround[holes].x).toString() + "px";
+		pit.style.top = getPosition(brokenGround[holes].y).toString() + "px";
+
+		pit.innerHTML = "💣";
+		playground.appendChild(pit);
 	}
 }
 
@@ -306,23 +329,68 @@ function checkHighscore() {
 }
 
 function buildHole() {
-	if (foodCount % 2 === 0) {
-		hole.x = Math.floor(Math.random() * 15);
-		hole.y = Math.floor(Math.random() * 15);
-
-		const pit = document.createElement("div");
-		pit.classList.add("hole");
+	if (foodCount % 10 === 0) {
+		brokenGround.push({
+			x: Math.floor(Math.random() * 15),
+			y: Math.floor(Math.random() * 15),
+		});
 
 		for (let position = 0; position < snake.length; position++) {
-			if (hole.x === snake[position].x && hole.y === snake[position].y) {
-				hole.x = Math.floor(Math.random() * 15);
-				hole.y = Math.floor(Math.random() * 15);
+			for (let foodPos = 0; foodPos < 5; foodPos++) {
+				if (
+					(brokenGround[0].x === appleField[foodPos].x &&
+						brokenGround[0].y === appleField[foodPos].y) ||
+					(brokenGround[0].x === pearField[foodPos].x &&
+						brokenGround[0].y === pearField[foodPos].y)
+				)
+					if (
+						brokenGround[0].x === snake[position].x &&
+						brokenGround[0].y === snake[position].y
+					) {
+						brokenGround[0].x = Math.floor(Math.random() * 15);
+						brokenGround[0].y = Math.floor(Math.random() * 15);
+					}
 			}
 		}
-		pit.style.left = getPosition(hole.x).toString() + "px";
-		pit.style.top = getPosition(hole.y).toString() + "px";
-		pit.innerHTML = "&#128128;";
-		playground.appendChild(pit);
+
 		foodCount++;
 	}
+}
+
+function isFieldTaken() {
+	let taken = 0;
+	console.log(snake.length);
+	console.log(snake);
+	console.log(appleField.length);
+	console.log(appleField);
+	console.log(pearField.length);
+	console.log(pearField);
+	console.log(brokenGround.length);
+	console.log(brokenGround);
+
+	for (let a = 0; a < snake.length; a++) {
+		takenFields[a] = snake[a];
+	}
+	taken = snake.length;
+
+	for (let b = 0; appleField.length; b++) {
+		takenFields[taken + b] = appleField[b];
+	}
+	taken = snake.length + appleField.length;
+
+	for (let c = 0; pearField.length; c++) {
+		takenFields[taken + c] = pearField[c];
+	}
+	taken = snake.length + appleField.length + pearField.length;
+
+	for (let d = 0; d < brokenGround.length; d++) {
+		takenFields[taken + d] = brokenGround[d];
+	}
+
+	taken =
+		snake.length + appleField.length + pearField.length + brokenGround.length;
+
+	console.log(taken);
+	console.log(takenFields);
+	console.log(takenFields.length);
 }
