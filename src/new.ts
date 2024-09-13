@@ -20,16 +20,16 @@ let lastDirection = "right";
 
 const snake: { x: number; y: number }[] = [];
 
-let apple: { x: number; y: number } = {
-	x: Math.floor(Math.random() * 15),
-	y: Math.floor(Math.random() * 15),
-};
+const appleField: { x: number; y: number }[] = [];
+
+// let apple: { x: number; y: number } = {
+// 	x: Math.floor(Math.random() * 15),
+// 	y: Math.floor(Math.random() * 15),
+// };
 
 let speed = 2;
 
 let intervalId = 0;
-//MARK:TASK: ADD APPLECOUNT
-let appleCount = 5;
 
 document.addEventListener("keydown", keyPress);
 
@@ -52,34 +52,38 @@ function start() {
 	startButton.style.visibility = "hidden";
 	snake.push({ x: 7, y: 7 });
 	newFood();
+	// for (let b = 0; b < appleField.length; b++) {
+	// 	console.log("applefield.x= " + appleField[b].x);
+	// 	console.log("applefield.y= " + appleField[b].y);
+	// }
 	pace();
 }
 
 function newFood() {
-	// for (let a=0; a<5;a++){
-	let randomX = Math.floor(Math.random() * 15);
-	let randomY = Math.floor(Math.random() * 15);
-	for (let position = 0; position < snake.length; position++) {
-		if (randomX === snake[position].x && randomY === snake[position].y) {
-			randomX = Math.floor(Math.random() * 15);
-			randomY = Math.floor(Math.random() * 15);
+	for (let a = 0; appleField.length < 5; a++) {
+		let randomX = Math.floor(Math.random() * 15);
+		let randomY = Math.floor(Math.random() * 15);
+		for (let position = 0; position < snake.length; position++) {
+			if (randomX === snake[position].x && randomY === snake[position].y) {
+				randomX = Math.floor(Math.random() * 15);
+				randomY = Math.floor(Math.random() * 15);
+			}
 		}
+		appleField.unshift({ x: randomX, y: randomY });
 	}
-	apple = { x: randomX, y: randomY };
-	countApples();
-	// }
 }
 
 function checkIfFood() {
-	if (snake[0].y === apple.y && snake[0].x === apple.x) {
-		appleCount--;
-		clearInterval(intervalId);
-		speed = speed + 0.1;
-		if (speed > 15) {
-			speed = 15;
+	for (let a = 0; appleField.length < 5; a++) {
+		if (snake[0].y === appleField[a].y && snake[0].x === appleField[a].x) {
+			clearInterval(intervalId);
+			speed = speed + 0.1;
+			if (speed > 15) {
+				speed = 15;
+			}
+			pace();
+			return true;
 		}
-		pace();
-		return true;
 	}
 }
 
@@ -150,6 +154,7 @@ function restart() {
 	direction = "right";
 	lastDirection = "right";
 	snake.splice(0);
+	appleField.splice(0);
 	speed = 2;
 	snake.push({ x: 7, y: 7 });
 	startButton.style.visibility = "visible";
@@ -167,13 +172,13 @@ function render() {
 	for (const thing of oldThings) {
 		thing.remove();
 	}
-
-	const food = document.createElement("div");
-	food.classList.add("food");
-	playground.appendChild(food);
-
-	food.style.left = getPosition(apple.x).toString() + "px";
-	food.style.top = getPosition(apple.y).toString() + "px";
+	for (let a = 0; appleField.length < 5; a++) {
+		const food = document.createElement("div");
+		food.classList.add("food");
+		food.style.left = getPosition(appleField[a].x).toString() + "px";
+		food.style.top = getPosition(appleField[a].y).toString() + "px";
+		playground.appendChild(food);
+	}
 
 	for (let runs = 0; runs < snake.length; runs++) {
 		const snakeBody = document.createElement("div");
@@ -191,8 +196,8 @@ function getPosition(index: number) {
 	return index * fieldSize + fieldSize / 2;
 }
 
-function countApples() {
-	if (appleCount < 5) {
-		newFood();
-	}
-}
+// function countApples() {
+// 	if (appleCount < 5) {
+// 		newFood();
+// 	}
+// }
