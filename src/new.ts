@@ -36,7 +36,11 @@ const appleField: { x: number; y: number }[] = [];
 
 const pearField: { x: number; y: number }[] = [];
 
+const hole: { x: number; y: number }[] = [];
+
 let whichFood = "";
+
+let foodCount = 1;
 
 let speed = 2;
 
@@ -77,6 +81,10 @@ function start() {
 			y: Math.floor(Math.random() * 15),
 		});
 	}
+	hole.push({
+		x: -1,
+		y: -1,
+	});
 
 	newFood();
 	pace();
@@ -92,9 +100,14 @@ function newFood() {
 	let randomX = Math.floor(Math.random() * 15);
 	let randomY = Math.floor(Math.random() * 15);
 	for (let position = 0; position < snake.length; position++) {
-		if (randomX === snake[position].x && randomY === snake[position].y) {
-			randomX = Math.floor(Math.random() * 15);
-			randomY = Math.floor(Math.random() * 15);
+		for (let holePosition = 0; holePosition < hole.length; holePosition++) {
+			if (
+				(randomX === snake[position].x && randomY === snake[position].y) ||
+				(randomX === hole[holePosition].x && randomY === hole[holePosition].y)
+			) {
+				randomX = Math.floor(Math.random() * 15);
+				randomY = Math.floor(Math.random() * 15);
+			}
 		}
 	}
 	array.unshift({ x: randomX, y: randomY });
@@ -110,6 +123,7 @@ function checkIfFood() {
 				speed = 15;
 			}
 			points += 5;
+			foodCount++;
 			whichFood = "apple";
 			pointWriter.innerHTML = "Punkte: " + points.toString();
 			pace();
@@ -125,6 +139,7 @@ function checkIfFood() {
 				speed = 15;
 			}
 			points += 10;
+			foodCount++;
 			whichFood = "pear";
 			pointWriter.innerHTML = "Punkte: " + points.toString();
 			pace();
@@ -136,6 +151,13 @@ function checkIfFood() {
 function checkIfCrash() {
 	for (let body = 1; body < snake.length; body++) {
 		if (snake[0].x === snake[body].x && snake[0].y === snake[body].y) {
+			alert("Das war ein Crash. GAME OVER");
+			checkHighscore();
+			restart();
+		}
+	}
+	for (let position = 0; position < hole.length; position++) {
+		if (snake[0].x === hole[position].x && snake[0].y === hole[position].y) {
 			alert("Das war ein Crash. GAME OVER");
 			checkHighscore();
 			restart();
@@ -191,6 +213,7 @@ function movement() {
 		snake.unshift({ x: snake[0].x + 1, y: snake[0].y });
 	}
 	checkIfCrash();
+	buildHole();
 	if (checkIfFood()) {
 		newFood();
 	} else {
@@ -206,10 +229,23 @@ function restart() {
 	lastDirection = "right";
 	snake.splice(0);
 	appleField.splice(0);
+	hole.splice(0);
 	speed = 2;
+	whichFood = "";
+	foodCount = 0;
 	snake.push({ x: 7, y: 7 });
+	hole.push({
+		x: -1,
+		y: -1,
+	});
 	for (let b = 0; b < 5; b++) {
 		appleField.push({
+			x: Math.floor(Math.random() * 15),
+			y: Math.floor(Math.random() * 15),
+		});
+	}
+	for (let b = 0; b < 5; b++) {
+		pearField.push({
 			x: Math.floor(Math.random() * 15),
 			y: Math.floor(Math.random() * 15),
 		});
@@ -266,5 +302,27 @@ function checkHighscore() {
 	if (points > lastScore) {
 		highscore.innerHTML = "Highscore: " + points.toString();
 		lastScore = points;
+	}
+}
+
+function buildHole() {
+	if (foodCount % 2 === 0) {
+		hole.x = Math.floor(Math.random() * 15);
+		hole.y = Math.floor(Math.random() * 15);
+
+		const pit = document.createElement("div");
+		pit.classList.add("hole");
+
+		for (let position = 0; position < snake.length; position++) {
+			if (hole.x === snake[position].x && hole.y === snake[position].y) {
+				hole.x = Math.floor(Math.random() * 15);
+				hole.y = Math.floor(Math.random() * 15);
+			}
+		}
+		pit.style.left = getPosition(hole.x).toString() + "px";
+		pit.style.top = getPosition(hole.y).toString() + "px";
+		pit.innerHTML = "&#128128;";
+		playground.appendChild(pit);
+		foodCount++;
 	}
 }

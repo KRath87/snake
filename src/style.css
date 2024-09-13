@@ -74,6 +74,18 @@
 	color: wheat;
 }
 
+#playground .hole {
+	background-color: #202020;
+	height: 30px;
+	width: 30px;
+	border-radius: 50%;
+	transform: translate(-50%, -50%);
+	color: antiquewhite;
+
+	position: absolute;
+	z-index: 1;
+}
+
 #score .points {
 	font-size: 30px;
 }
