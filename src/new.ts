@@ -312,11 +312,15 @@ function checkHighscore() {
 }
 
 function buildHole() {
-	if (foodCount % 10 === 0) {
-		brokenGround.push({
+	if (foodCount % 2 === 0) {
+		brokenGround.unshift({
 			x: Math.floor(Math.random() * 15),
 			y: Math.floor(Math.random() * 15),
 		});
+
+		if (brokenGround.length > 15) {
+			brokenGround.splice(15);
+		}
 
 		for (let position = 0; position < snake.length; position++) {
 			for (let foodPos = 0; foodPos < 5; foodPos++) {
