@@ -76,20 +76,14 @@ function start() {
 			x: Math.floor(Math.random() * 15),
 			y: Math.floor(Math.random() * 15),
 		});
-		if (appleField[b].x === 7 && appleField[b].y === 7) {
-			appleField[b].x = Math.floor(Math.random() * 15);
-			appleField[b].x = Math.floor(Math.random() * 15);
-		}
+		checkifTaken(appleField[b].x, appleField[b].y);
 	}
 	for (let b = 0; b < 5; b++) {
 		pearField.push({
 			x: Math.floor(Math.random() * 15),
 			y: Math.floor(Math.random() * 15),
 		});
-		if (pearField[b].x === 7 && pearField[b].y === 7) {
-			pearField[b].x = Math.floor(Math.random() * 15);
-			appleField[b].x = Math.floor(Math.random() * 15);
-		}
+		checkifTaken(pearField[b].x, pearField[b].y);
 	}
 	brokenGround.push({
 		x: -1,
@@ -176,9 +170,6 @@ function checkIfCrash() {
 			speed = 15;
 		}
 		foodCount = 10;
-		// alert("Das war ein Crash. GAME OVER");
-		// checkHighscore();
-		// restart();
 	} else if (snake[0].y > 14) {
 		snake[0].y = 0;
 		speed = speed + 0.2;
@@ -186,9 +177,6 @@ function checkIfCrash() {
 			speed = 15;
 		}
 		foodCount = 10;
-		// alert("Das war ein Crash. GAME OVER");
-		// checkHighscore();
-		// restart();
 	} else if (snake[0].x < 0) {
 		snake[0].x = 14;
 		speed = speed + 0.2;
@@ -196,9 +184,6 @@ function checkIfCrash() {
 			speed = 15;
 		}
 		foodCount = 10;
-		// alert("Das war ein Crash. GAME OVER");
-		// checkHighscore();
-		// restart();
 	} else if (snake[0].x > 14) {
 		snake[0].x = 0;
 		speed = speed + 0.2;
@@ -206,9 +191,6 @@ function checkIfCrash() {
 			speed = 15;
 		}
 		foodCount = 10;
-		// alert("Das war ein Crash. GAME OVER");
-		// checkHighscore();
-		// restart();
 	}
 }
 
@@ -314,6 +296,39 @@ function buildHole() {
 		foodCount++;
 	}
 }
+
+function checkifTaken(x: number, y: number) {
+	for (let z = 0; z < 3; z++) {
+		for (let a = 0; a < snake.length; a++) {
+			if (snake[a].x === x && snake[a].y === y) {
+				x = Math.floor(Math.random() * 15);
+				y = Math.floor(Math.random() * 15);
+			}
+
+			for (let b = 0; b < brokenGround.length; b++) {
+				if (brokenGround[b].x === x && brokenGround[b].y === y) {
+					x = Math.floor(Math.random() * 15);
+					y = Math.floor(Math.random() * 15);
+				}
+
+				for (let c = 0; c < appleField.length; c++) {
+					if (appleField[c].x === x && appleField[c].y === y) {
+						x = Math.floor(Math.random() * 15);
+						y = Math.floor(Math.random() * 15);
+					}
+
+					for (let d = 0; d < pearField.length; d++) {
+						if (pearField[d].x === x && pearField[d].y === y) {
+							x = Math.floor(Math.random() * 15);
+							y = Math.floor(Math.random() * 15);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 function render() {
 	const oldThings = document.querySelectorAll(".snake,.apple,.pear,.hole");
 	for (const thing of oldThings) {
@@ -359,32 +374,5 @@ function render() {
 
 		pit.innerHTML = "💣";
 		playground.appendChild(pit);
-	}
-}
-
-function checkifTaken(x: number, y: number) {
-	for (let a = 0; a < snake.length; a++) {
-		if (snake[a].x === x && snake[a].y === y) {
-			x = Math.floor(Math.random() * 15);
-			y = Math.floor(Math.random() * 15);
-		}
-	}
-	for (let b = 0; b < brokenGround.length; b++) {
-		if (brokenGround[b].x === x && brokenGround[b].y === y) {
-			x = Math.floor(Math.random() * 15);
-			y = Math.floor(Math.random() * 15);
-		}
-	}
-	for (let c = 0; c < appleField.length; c++) {
-		if (appleField[c].x === x && appleField[c].y === y) {
-			x = Math.floor(Math.random() * 15);
-			y = Math.floor(Math.random() * 15);
-		}
-	}
-	for (let d = 0; d < pearField.length; d++) {
-		if (pearField[d].x === x && pearField[d].y === y) {
-			x = Math.floor(Math.random() * 15);
-			y = Math.floor(Math.random() * 15);
-		}
 	}
 }
