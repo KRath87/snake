@@ -76,12 +76,20 @@ function start() {
 			x: Math.floor(Math.random() * 15),
 			y: Math.floor(Math.random() * 15),
 		});
+		if (appleField[b].x === 7 && appleField[b].y === 7) {
+			appleField[b].x = Math.floor(Math.random() * 15);
+			appleField[b].x = Math.floor(Math.random() * 15);
+		}
 	}
 	for (let b = 0; b < 5; b++) {
 		pearField.push({
 			x: Math.floor(Math.random() * 15),
 			y: Math.floor(Math.random() * 15),
 		});
+		if (pearField[b].x === 7 && pearField[b].y === 7) {
+			pearField[b].x = Math.floor(Math.random() * 15);
+			appleField[b].x = Math.floor(Math.random() * 15);
+		}
 	}
 	brokenGround.push({
 		x: -1,
@@ -101,28 +109,9 @@ function newFood() {
 	}
 	let randomX = Math.floor(Math.random() * 15);
 	let randomY = Math.floor(Math.random() * 15);
-	for (let position = 0; position < snake.length; position++) {
-		for (
-			let holePosition = 0;
-			holePosition < brokenGround.length;
-			holePosition++
-		) {
-			for (let a = 0; a < appleField.length; a++) {
-				for (let b = 0; b < pearField.length; b++) {
-					if (
-						(randomX === snake[position].x && randomY === snake[position].y) ||
-						(randomX === brokenGround[holePosition].x &&
-							randomY === brokenGround[holePosition].y) ||
-						(randomX === appleField[a].x && randomY === appleField[a].y) ||
-						(randomX === pearField[b].x && randomY === pearField[b].y)
-					) {
-						randomX = Math.floor(Math.random() * 15);
-						randomY = Math.floor(Math.random() * 15);
-					}
-				}
-			}
-		}
-	}
+
+	checkifTaken(randomX, randomY);
+
 	array.unshift({ x: randomX, y: randomY });
 }
 
@@ -317,29 +306,11 @@ function buildHole() {
 			x: Math.floor(Math.random() * 15),
 			y: Math.floor(Math.random() * 15),
 		});
+		checkifTaken(brokenGround[0].x, brokenGround[0].y);
 
 		if (brokenGround.length > 15) {
 			brokenGround.splice(15);
 		}
-
-		for (let position = 0; position < snake.length; position++) {
-			for (let foodPos = 0; foodPos < 5; foodPos++) {
-				if (
-					(brokenGround[0].x === appleField[foodPos].x &&
-						brokenGround[0].y === appleField[foodPos].y) ||
-					(brokenGround[0].x === pearField[foodPos].x &&
-						brokenGround[0].y === pearField[foodPos].y)
-				)
-					if (
-						brokenGround[0].x === snake[position].x &&
-						brokenGround[0].y === snake[position].y
-					) {
-						brokenGround[0].x = Math.floor(Math.random() * 15);
-						brokenGround[0].y = Math.floor(Math.random() * 15);
-					}
-			}
-		}
-
 		foodCount++;
 	}
 }
@@ -388,5 +359,32 @@ function render() {
 
 		pit.innerHTML = "💣";
 		playground.appendChild(pit);
+	}
+}
+
+function checkifTaken(x: number, y: number) {
+	for (let a = 0; a < snake.length; a++) {
+		if (snake[a].x === x && snake[a].y === y) {
+			x = Math.floor(Math.random() * 15);
+			y = Math.floor(Math.random() * 15);
+		}
+	}
+	for (let b = 0; b < brokenGround.length; b++) {
+		if (brokenGround[b].x === x && brokenGround[b].y === y) {
+			x = Math.floor(Math.random() * 15);
+			y = Math.floor(Math.random() * 15);
+		}
+	}
+	for (let c = 0; c < appleField.length; c++) {
+		if (appleField[c].x === x && appleField[c].y === y) {
+			x = Math.floor(Math.random() * 15);
+			y = Math.floor(Math.random() * 15);
+		}
+	}
+	for (let d = 0; d < pearField.length; d++) {
+		if (pearField[d].x === x && pearField[d].y === y) {
+			x = Math.floor(Math.random() * 15);
+			y = Math.floor(Math.random() * 15);
+		}
 	}
 }
