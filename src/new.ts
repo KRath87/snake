@@ -121,7 +121,6 @@ function checkIfFood() {
 			points += 5;
 			foodCount++;
 			whichFood = "apple";
-			pointWriter.innerHTML = "Punkte: " + points.toString();
 			pace();
 			return true;
 		}
@@ -137,7 +136,6 @@ function checkIfFood() {
 			points += 10;
 			foodCount++;
 			whichFood = "pear";
-			pointWriter.innerHTML = "Punkte: " + points.toString();
 			pace();
 			return true;
 		}
@@ -148,7 +146,7 @@ function checkIfCrash() {
 	for (let body = 1; body < snake.length; body++) {
 		if (snake[0].x === snake[body].x && snake[0].y === snake[body].y) {
 			alert("Das war ein Crash. GAME OVER");
-			checkHighscore();
+
 			restart();
 		}
 	}
@@ -158,7 +156,7 @@ function checkIfCrash() {
 			snake[0].y === brokenGround[position].y
 		) {
 			alert("Das war ein Crash. GAME OVER");
-			checkHighscore();
+
 			restart();
 		}
 	}
@@ -234,9 +232,7 @@ function movement() {
 
 function restart() {
 	clearInterval(intervalId);
-
 	points = 0;
-	pointWriter.innerHTML = "Punkte: " + points.toString();
 	direction = "right";
 	lastDirection = "right";
 	snake.splice(0);
@@ -330,6 +326,8 @@ function checkifTaken(x: number, y: number) {
 }
 
 function render() {
+	pointWriter.innerHTML = "Punkte: " + points.toString();
+	checkHighscore();
 	const oldThings = document.querySelectorAll(".snake,.apple,.pear,.hole");
 	for (const thing of oldThings) {
 		thing.remove();
