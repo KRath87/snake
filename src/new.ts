@@ -279,7 +279,7 @@ function checkHighscore() {
 }
 
 function buildHole() {
-	if (foodCount % 2 === 0) {
+	if (foodCount % 10 === 0) {
 		brokenGround.unshift({
 			x: Math.floor(Math.random() * 15),
 			y: Math.floor(Math.random() * 15),
